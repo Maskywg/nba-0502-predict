@@ -1,0 +1,14 @@
+name: 🏀 自動更新 NBA 賽果
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # 每 15 分鐘
+  workflow_dispatch:           # 也可手動觸發
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 安裝套件
+        run: pip install requests
+      - name: 抓取 ESPN 賽果並更新 Firestore
+        run: python3 scripts/update_results.py
