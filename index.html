@@ -414,8 +414,7 @@ function renderPrevLB() {
   }).sort((a, b) =>
     b.correct - a.correct ||
     b.marginCorrect - a.marginCorrect ||
-    a.marginDistance - b.marginDistance ||
-    a.time - b.time
+    a.marginDistance - b.marginDistance
   );
 
   let rank = 0;
@@ -842,6 +841,7 @@ function renderLB(){
     });
     return{...e,correct,marginCorrect,marginDistance};
   }).sort((a,b)=>b.correct-a.correct||b.marginCorrect-a.marginCorrect||a.marginDistance-b.marginDistance);
+  // 注意：完全同分同差距 → 並列同名次，不用提交時間分勝負
 
   let rank=0;
   scored.forEach((e,i)=>{
