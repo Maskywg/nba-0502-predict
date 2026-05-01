@@ -19,31 +19,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @keyframes dn{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes crownPop{0%{transform:scale(0) rotate(-20deg)}70%{transform:scale(1.3) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
 
-/* ── 昨日榜單區塊 ── */
-.prev-lb-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px 22px;margin-bottom:18px;animation:dn .5s ease both}
-.prev-lb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.prev-lb-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:#1D428A}
-.prev-result-row{display:flex;gap:5px;flex-wrap:wrap}
-.prev-result-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.5px}
-.prev-result-tag.win{background:rgba(22,163,74,.12);color:#16a34a;border:1px solid rgba(22,163,74,.3)}
-.prev-result-tag.pending{background:rgba(29,66,138,.06);color:#5577aa;border:1px solid rgba(29,66,138,.2)}
-.prev-lb-table{border:1px solid var(--border);border-radius:14px;overflow:hidden;font-size:12px}
-.prev-lb-head{display:grid;grid-template-columns:36px 1fr repeat(3,1fr) 44px;padding:8px 14px;background:rgba(29,66,138,.05);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
-.prev-lb-row{display:grid;grid-template-columns:36px 1fr repeat(3,1fr) 44px;padding:10px 14px;border-bottom:1px solid rgba(29,66,138,.06);align-items:center}
-.prev-lb-row:last-child{border-bottom:none}
-.prev-lb-rank{font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--muted)}
-.prev-lb-rank.g{color:#FFD700}.prev-lb-rank.s{color:#C0C0C0}.prev-lb-rank.b{color:#CD7F32}
-.prev-lb-name{font-weight:700;font-size:13px}
-.prev-lb-pick{font-size:11px;color:var(--muted)}
-.prev-lb-pick.ok{color:#16a34a;font-weight:900}
-.prev-lb-pick.ng{color:#dc2626;text-decoration:line-through;opacity:.7}
-.prev-lb-score{font-size:11px;font-weight:900;color:#1D428A;text-align:right}
-@media(max-width:580px){
-  .prev-lb-head{grid-template-columns:36px 1fr 44px}
-  .prev-lb-head .phide{display:none}
-  .prev-lb-row{grid-template-columns:36px 1fr 44px}
-  .prev-lb-row .prev-lb-pick{display:none}
-}
 
 .prev-link{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px;animation:dn .5s ease both;text-decoration:none;color:var(--text);transition:box-shadow .2s}
 .prev-link:hover{box-shadow:0 4px 18px rgba(29,66,138,.15)}
@@ -241,38 +216,19 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 <body>
 <div class="wrap">
 
-<!-- ═══ 5/1 昨日榜單 ═══ -->
-<div class="prev-lb-section" id="prev-lb-section">
-  <div class="prev-lb-header">
-    <div class="prev-lb-title">📋 5/1 昨日榜單</div>
-    <div class="prev-result-row" id="prev-result-row">
-      <span class="prev-result-tag pending">⏳ 載入中</span>
-    </div>
-  </div>
-  <div class="prev-lb-table">
-    <div class="prev-lb-head">
-      <div></div><div>名字</div>
-      <div class="phide">尼克/老鷹</div>
-      <div class="phide">塞爾/76人</div>
-      <div class="phide">灰狼/金塊</div>
-      <div>分</div>
-    </div>
-    <div id="prev-lb-body"><div class="lb-empty" style="padding:18px;font-size:12px">⏳ 載入中...</div></div>
-  </div>
-</div>
-
 <!-- 昨日 5/1 冠軍公告 -->
 <div class="champ-banner">
   <div class="champ-top">
     <div class="champ-trophy">🏆</div>
     <div>
-      <div class="champ-title">🎉 昨日 5/1 預測冠軍</div>
-      <div class="champ-date" id="champ-result-line">結果更新中，賽後公布</div>
+      <div class="champ-title">🎉 昨日 5/1 預測榜單</div>
+      <div class="champ-date" id="champ-result-line">結果載入中…</div>
     </div>
   </div>
   <div class="champ-names" id="champ-names-area">
-    <span class="champ-chip" style="background:rgba(180,180,180,.15);color:#888;border:1px solid #ddd;">⏳ 待 5/1 賽果出爐</span>
+    <span class="champ-chip" style="background:rgba(180,180,180,.15);color:#888;border:1px solid #ddd;">⏳ 載入中</span>
   </div>
+  <div class="champ-runners" id="champ-runners-area"></div>
 </div>
 
 <a class="prev-link" href="https://maskywg.github.io/nba-0501-predict/" target="_blank">
@@ -435,16 +391,14 @@ let prevResults = [null, null, null], prevDB = [];
 
 function renderPrevLB() {
   const decided = prevResults.filter(r => r !== null).length;
-  const tags = prevResults.map((r, i) =>
-    r ? `<span class="prev-result-tag win">✓ ${r} 勝</span>`
-      : `<span class="prev-result-tag pending">⏳ ${PREV_MATCH_NAMES[i]}</span>`
-  ).join('');
-  document.getElementById('prev-result-row').innerHTML = tags;
+  const resultStr = prevResults.map((r, i) =>
+    r ? `✓ ${r}` : `⏳ ${PREV_MATCH_NAMES[i]}`
+  ).join('　');
+  document.getElementById('champ-result-line').textContent =
+    decided > 0 ? `5/1 結果：${resultStr}` : '賽果載入中…';
 
-  if (!prevDB.length) {
-    document.getElementById('prev-lb-body').innerHTML = '<div class="lb-empty" style="padding:18px;font-size:12px">尚無資料</div>';
-    return;
-  }
+  if (!prevDB.length) return;
+
   const scored = prevDB.map(e => {
     let correct = 0;
     (e.votes||[]).forEach((v, i) => { if (prevResults[i] && v === prevResults[i]) correct++; });
@@ -457,24 +411,30 @@ function renderPrevLB() {
     e._rank = rank;
   });
 
-  document.getElementById('prev-lb-body').innerHTML = scored.map((e, i) => {
-    const r = e._rank;
-    const medal = decided > 0 ? (PREV_SYM[r] || (r+1)) : (i+1);
-    const cls = decided > 0 ? (PREV_CLS[r] || '') : '';
-    const cells = (e.votes||[]).map((v, idx) => {
-      if (!v) return `<div class="prev-lb-pick phide">—</div>`;
-      if (prevResults[idx] === null) return `<div class="prev-lb-pick phide">${v}</div>`;
-      const ok = v === prevResults[idx];
-      return `<div class="prev-lb-pick phide ${ok?'ok':'ng'}">${ok?'✓':'✗'} ${v}</div>`;
-    }).join('');
-    return `
-      <div class="prev-lb-row">
-        <div class="prev-lb-rank ${cls}">${medal}</div>
-        <div class="prev-lb-name">${esc(e.name)}</div>
-        ${cells}
-        <div class="prev-lb-score">${decided>0?`${e.correct}/${decided}`:'-'}</div>
-      </div>`;
-  }).join('');
+  // 取冠軍（同分並列）、亞軍、季軍
+  const champs  = scored.filter(e => e._rank === 0);
+  const runners = scored.filter(e => e._rank === 1);
+  const bronzes = scored.filter(e => e._rank === 2);
+
+  if (decided === 0) {
+    document.getElementById('champ-names-area').innerHTML =
+      `<span class="champ-chip" style="background:rgba(180,180,180,.15);color:#888;border:1px solid #ddd;">⏳ 賽果出爐後公布</span>`;
+    document.getElementById('champ-runners-area').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('champ-names-area').innerHTML =
+    champs.map(e =>
+      `<span class="champ-chip">🥇 ${esc(e.name)} <span style="font-size:11px;opacity:.7">${e.correct}/${decided}</span></span>`
+    ).join('');
+
+  const runnerHtml = runners.map(e =>
+    `<span class="runner-chip">🥈 ${esc(e.name)} <span style="opacity:.7;font-size:10px">${e.correct}/${decided}</span></span>`
+  ).join('');
+  const bronzeHtml = bronzes.map(e =>
+    `<span class="bronze-chip">🥉 ${esc(e.name)} <span style="opacity:.7;font-size:10px">${e.correct}/${decided}</span></span>`
+  ).join('');
+  document.getElementById('champ-runners-area').innerHTML = runnerHtml + bronzeHtml;
 }
 
 onSnapshot(query(prevColRef, orderBy('time')), snap => {
