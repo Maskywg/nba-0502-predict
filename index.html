@@ -19,6 +19,32 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 @keyframes dn{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes crownPop{0%{transform:scale(0) rotate(-20deg)}70%{transform:scale(1.3) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
 
+/* ── 昨日榜單區塊 ── */
+.prev-lb-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px 22px;margin-bottom:18px;animation:dn .5s ease both}
+.prev-lb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.prev-lb-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:#1D428A}
+.prev-result-row{display:flex;gap:5px;flex-wrap:wrap}
+.prev-result-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.5px}
+.prev-result-tag.win{background:rgba(22,163,74,.12);color:#16a34a;border:1px solid rgba(22,163,74,.3)}
+.prev-result-tag.pending{background:rgba(29,66,138,.06);color:#5577aa;border:1px solid rgba(29,66,138,.2)}
+.prev-lb-table{border:1px solid var(--border);border-radius:14px;overflow:hidden;font-size:12px}
+.prev-lb-head{display:grid;grid-template-columns:36px 1fr repeat(3,1fr) 44px;padding:8px 14px;background:rgba(29,66,138,.05);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
+.prev-lb-row{display:grid;grid-template-columns:36px 1fr repeat(3,1fr) 44px;padding:10px 14px;border-bottom:1px solid rgba(29,66,138,.06);align-items:center}
+.prev-lb-row:last-child{border-bottom:none}
+.prev-lb-rank{font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--muted)}
+.prev-lb-rank.g{color:#FFD700}.prev-lb-rank.s{color:#C0C0C0}.prev-lb-rank.b{color:#CD7F32}
+.prev-lb-name{font-weight:700;font-size:13px}
+.prev-lb-pick{font-size:11px;color:var(--muted)}
+.prev-lb-pick.ok{color:#16a34a;font-weight:900}
+.prev-lb-pick.ng{color:#dc2626;text-decoration:line-through;opacity:.7}
+.prev-lb-score{font-size:11px;font-weight:900;color:#1D428A;text-align:right}
+@media(max-width:580px){
+  .prev-lb-head{grid-template-columns:36px 1fr 44px}
+  .prev-lb-head .phide{display:none}
+  .prev-lb-row{grid-template-columns:36px 1fr 44px}
+  .prev-lb-row .prev-lb-pick{display:none}
+}
+
 .prev-link{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px;animation:dn .5s ease both;text-decoration:none;color:var(--text);transition:box-shadow .2s}
 .prev-link:hover{box-shadow:0 4px 18px rgba(29,66,138,.15)}
 .codex-link{background:linear-gradient(135deg,#fff8f0,#fff3e0);border:1px solid #f0c090;border-radius:14px;padding:13px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);transition:box-shadow .2s;animation:slideUp .5s ease .05s both}
@@ -71,15 +97,19 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 .ctag{font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 11px;border-radius:100px;text-transform:uppercase}
 .east{background:rgba(200,16,46,.12);color:#C8102E;border:1px solid rgba(200,16,46,.35)}
 .west{background:rgba(29,66,138,.12);color:#1D428A;border:1px solid rgba(29,66,138,.35)}
+.g7tag{background:linear-gradient(135deg,rgba(200,16,46,.15),rgba(29,66,138,.15));color:#7a0a60;border:1px solid rgba(150,30,100,.4)}
 
 .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;animation:slideUp .5s ease both}
 .card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(100,180,255,.06),transparent 60%);pointer-events:none}
 .card:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(29,66,138,.15)}
+.card.g7-card{border-color:rgba(150,30,100,.35);box-shadow:0 0 0 1px rgba(200,16,46,.08)}
+.card.g7-card::before{background:linear-gradient(135deg,rgba(200,16,46,.05),rgba(29,66,138,.04),transparent 70%)}
 .card-time{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:16px}
 .card-note{display:inline-block;font-size:11px;font-weight:700;color:#1D428A;background:rgba(29,66,138,.1);border:1px solid rgba(29,66,138,.25);border-radius:6px;padding:2px 8px;margin-left:8px;letter-spacing:1px}
+.card-note.g7-note{color:#8b0000;background:rgba(200,16,46,.1);border-color:rgba(200,16,46,.3);animation:crownPop .6s ease both}
 .series-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;letter-spacing:.5px}
 .series-badge.lead{background:rgba(200,16,46,.12);color:#C8102E;border:1px solid rgba(200,16,46,.3)}
-.series-badge.tied{background:rgba(29,66,138,.12);color:#1D428A;border:1px solid rgba(29,66,138,.3)}
+.series-badge.tied{background:rgba(150,30,100,.12);color:#7a0a60;border:1px solid rgba(150,30,100,.3)}
 
 .teams{display:flex;align-items:center;gap:10px;margin-bottom:18px}
 .team{flex:1;display:flex;align-items:center;gap:8px}
@@ -150,8 +180,8 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 .result-tag.win{background:rgba(22,163,74,.12);color:#16a34a;border:1px solid rgba(22,163,74,.3)}
 .result-tag.pending{background:rgba(29,66,138,.06);color:#5577aa;border:1px solid rgba(29,66,138,.2)}
 .lb-table{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden}
-.lb-head{display:grid;grid-template-columns:46px 1fr repeat(3,1fr) 60px;padding:11px 18px;background:rgba(29,66,138,.05);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
-.lb-row{display:grid;grid-template-columns:46px 1fr repeat(3,1fr) 60px;padding:13px 18px;border-bottom:1px solid rgba(29,66,138,.06);align-items:center;transition:background .2s;animation:slideUp .3s ease both}
+.lb-head{display:grid;grid-template-columns:46px 1fr repeat(4,1fr) 60px;padding:11px 18px;background:rgba(29,66,138,.05);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
+.lb-row{display:grid;grid-template-columns:46px 1fr repeat(4,1fr) 60px;padding:13px 18px;border-bottom:1px solid rgba(29,66,138,.06);align-items:center;transition:background .2s;animation:slideUp .3s ease both}
 .lb-row:last-child{border-bottom:none}
 .lb-row:hover{background:rgba(29,66,138,.04)}
 .lb-row.me{background:rgba(29,66,138,.08)}
@@ -172,9 +202,10 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 .del-btn{background:none;border:1px solid rgba(200,16,46,.3);color:#C8102E;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
 .del-btn:hover{background:rgba(200,16,46,.1)}
 .score-badge{display:inline-block;font-size:10px;font-weight:900;padding:2px 8px;border-radius:100px;margin-left:6px;vertical-align:middle}
-.score-badge.s3{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;border:1px solid #FFD700;box-shadow:0 0 8px rgba(255,215,0,.4)}
-.score-badge.s2{background:rgba(22,163,74,.15);color:#16a34a;border:1px solid rgba(22,163,74,.3)}
-.score-badge.s1{background:rgba(29,66,138,.12);color:#1D428A;border:1px solid rgba(29,66,138,.25)}
+.score-badge.s4{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;border:1px solid #FFD700;box-shadow:0 0 8px rgba(255,215,0,.4)}
+.score-badge.s3{background:rgba(22,163,74,.15);color:#16a34a;border:1px solid rgba(22,163,74,.3)}
+.score-badge.s2{background:rgba(29,66,138,.12);color:#1D428A;border:1px solid rgba(29,66,138,.25)}
+.score-badge.s1{background:rgba(220,150,0,.12);color:#b08000;border:1px solid rgba(220,150,0,.3)}
 .score-badge.s0{background:rgba(200,16,46,.08);color:#C8102E;border:1px solid rgba(200,16,46,.2)}
 .crown-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .crown{font-size:18px;animation:crownPop .5s ease both}
@@ -210,12 +241,32 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 <body>
 <div class="wrap">
 
-<!-- 昨日 5/1 冠軍公告（5/1 賽果出爐後更新） -->
+<!-- ═══ 5/1 昨日榜單 ═══ -->
+<div class="prev-lb-section" id="prev-lb-section">
+  <div class="prev-lb-header">
+    <div class="prev-lb-title">📋 5/1 昨日榜單</div>
+    <div class="prev-result-row" id="prev-result-row">
+      <span class="prev-result-tag pending">⏳ 載入中</span>
+    </div>
+  </div>
+  <div class="prev-lb-table">
+    <div class="prev-lb-head">
+      <div></div><div>名字</div>
+      <div class="phide">尼克/老鷹</div>
+      <div class="phide">塞爾/76人</div>
+      <div class="phide">灰狼/金塊</div>
+      <div>分</div>
+    </div>
+    <div id="prev-lb-body"><div class="lb-empty" style="padding:18px;font-size:12px">⏳ 載入中...</div></div>
+  </div>
+</div>
+
+<!-- 昨日 5/1 冠軍公告 -->
 <div class="champ-banner">
   <div class="champ-top">
     <div class="champ-trophy">🏆</div>
     <div>
-      <div class="champ-title">🎉 昨日 5/1 預測榜單</div>
+      <div class="champ-title">🎉 昨日 5/1 預測冠軍</div>
       <div class="champ-date" id="champ-result-line">結果更新中，賽後公布</div>
     </div>
   </div>
@@ -249,16 +300,16 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 </a>
 
 <header>
-  <div class="badge">🏀 NBA PLAYOFFS 2026 · 5/2</div>
+  <div class="badge">🏀 NBA PLAYOFFS 2026 · 5/2–5/3</div>
   <h1>季後賽預測</h1>
-  <p class="sub">5月2日 三場 G6 季後賽 · 截止：上午 7:00</p>
+  <p class="sub">三場 G6 + 一場 G7 決戰 · 截止：5月2日 上午 7:00</p>
 </header>
 
 <div class="daily-intro">
-  <div class="intro-kicker">🗓 5月2日 · 本日賽程引言</div>
-  <div class="intro-quote">「Luka 缺陣，Durant 可能缺陣——隊友說：沒事，我們自己來。」</div>
+  <div class="intro-kicker">🗓 5月2日–3日 · 本日賽程引言</div>
+  <div class="intro-quote">「Luka 缺陣，Durant 可能缺陣，Embiid 從 1-3 打進 G7——今天的主角不是超級巨星，是那些沒有退路的人。」</div>
   <div class="intro-sour">
-    <strong>Banchero</strong> 要在奧蘭多主場用一己之力擋下 Cade 的封關大軍，G5 各砍 45 分的史詩還沒說完；<strong>暴龍</strong>兩大全明星 Ingram＋Barnes 雙雙帶傷，生死戰靠什麼上？靠氣勢嗎；<strong>湖人</strong>要在火箭主場沒有 Luka 完成封關，Reaves 你的時代到了——或者說，你沒有退路了。今天是聯盟薪資最高的幾個人集體請假的一天，配角的高光時刻就是現在。
+    <strong>Banchero</strong> 要在奧蘭多主場用一己之力擋下 Cade 的封關大軍，G5 各砍 45 分的史詩還沒說完；<strong>暴龍</strong>兩大全明星 Ingram＋Barnes 雙雙帶傷，生死戰靠什麼上？靠氣勢嗎；<strong>湖人</strong>要在火箭主場沒有 Luka 完成封關，Reaves 你的時代到了；<strong>G7 波士頓</strong>，Embiid 從 1-3 到 3-3，這是費城重生還是塞爾提克的終局清算——這場的重量不是統計數字能算的。
   </div>
 </div>
 
@@ -275,7 +326,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
   <div class="injury-title">🚑 傷兵報告</div>
 
   <div class="injury-game">
-    <div class="injury-matchup">活塞 vs 魔術（G6 · DET leads 3-2 · 奧蘭多主場）</div>
+    <div class="injury-matchup">活塞 vs 魔術（G6 · ORL leads 3-2 · 奧蘭多主場）</div>
     <div class="injury-list">
       <span class="i-tag i-q">❓ Franz Wagner QUESTIONABLE（魔術，小腿不適）</span>
       <span class="i-tag i-doubt">⚠️ Jonathan Isaac DOUBTFUL（魔術，膝蓋傷勢）</span>
@@ -286,7 +337,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
     <div class="injury-matchup">騎士 vs 暴龍（G6 · CLE leads 3-2 · 多倫多主場）</div>
     <div class="injury-list">
       <span class="i-tag i-out">❌ Immanuel Quickley OUT（暴龍，賽季報銷）</span>
-      <span class="i-tag i-q">❓ Brandon Ingram QUESTIONABLE（暴龍，右腳跟發炎，G5 提前離場）</span>
+      <span class="i-tag i-q">❓ Brandon Ingram QUESTIONABLE（暴龍，右腳跟發炎）</span>
       <span class="i-tag i-q">❓ Scottie Barnes QUESTIONABLE（暴龍，右股四頭肌）</span>
     </div>
   </div>
@@ -296,6 +347,13 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
     <div class="injury-list">
       <span class="i-tag i-out">❌ Luka Dončić OUT（湖人，右腿後側拉傷）</span>
       <span class="i-tag i-doubt">⚠️ Kevin Durant DOUBTFUL（火箭，腳踝骨挫傷）</span>
+    </div>
+  </div>
+
+  <div class="injury-game">
+    <div class="injury-matchup">塞爾提克 vs 76人（G7 · Tied 3-3 · 波士頓主場）</div>
+    <div class="injury-list">
+      <span class="i-tag i-q">❓ Kristaps Porziņģis QUESTIONABLE（塞爾提克，小腿）</span>
     </div>
   </div>
 </div>
@@ -340,6 +398,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
       <div class="hpick">活塞/魔術</div>
       <div class="hpick">騎士/暴龍</div>
       <div class="hpick">湖人/火箭</div>
+      <div class="hpick">塞爾/76人</div>
       <div></div>
     </div>
     <div id="lb-body"><div class="lb-empty">🏀 連線中...</div></div>
@@ -367,6 +426,70 @@ const fsdb = getFirestore(app);
 const colRef = collection(fsdb, 'nba_0502_predict');
 const resultsRef = doc(fsdb, 'game_results', 'nba_0502');
 
+// ── 5/1 昨日榜單 ──
+const prevColRef = collection(fsdb, 'nba_0501_predict');
+const prevResultsRef = doc(fsdb, 'game_results', 'nba_0501');
+const PREV_MATCH_NAMES = ['尼克/老鷹', '塞爾/76人', '灰狼/金塊'];
+const PREV_SYM = ['🥇','🥈','🥉'], PREV_CLS = ['g','s','b'];
+let prevResults = [null, null, null], prevDB = [];
+
+function renderPrevLB() {
+  const decided = prevResults.filter(r => r !== null).length;
+  const tags = prevResults.map((r, i) =>
+    r ? `<span class="prev-result-tag win">✓ ${r} 勝</span>`
+      : `<span class="prev-result-tag pending">⏳ ${PREV_MATCH_NAMES[i]}</span>`
+  ).join('');
+  document.getElementById('prev-result-row').innerHTML = tags;
+
+  if (!prevDB.length) {
+    document.getElementById('prev-lb-body').innerHTML = '<div class="lb-empty" style="padding:18px;font-size:12px">尚無資料</div>';
+    return;
+  }
+  const scored = prevDB.map(e => {
+    let correct = 0;
+    (e.votes||[]).forEach((v, i) => { if (prevResults[i] && v === prevResults[i]) correct++; });
+    return { ...e, correct };
+  }).sort((a, b) => b.correct - a.correct || a.time - b.time);
+
+  let rank = 0;
+  scored.forEach((e, i) => {
+    if (i === 0 || e.correct !== scored[i-1].correct) rank = i;
+    e._rank = rank;
+  });
+
+  document.getElementById('prev-lb-body').innerHTML = scored.map((e, i) => {
+    const r = e._rank;
+    const medal = decided > 0 ? (PREV_SYM[r] || (r+1)) : (i+1);
+    const cls = decided > 0 ? (PREV_CLS[r] || '') : '';
+    const cells = (e.votes||[]).map((v, idx) => {
+      if (!v) return `<div class="prev-lb-pick phide">—</div>`;
+      if (prevResults[idx] === null) return `<div class="prev-lb-pick phide">${v}</div>`;
+      const ok = v === prevResults[idx];
+      return `<div class="prev-lb-pick phide ${ok?'ok':'ng'}">${ok?'✓':'✗'} ${v}</div>`;
+    }).join('');
+    return `
+      <div class="prev-lb-row">
+        <div class="prev-lb-rank ${cls}">${medal}</div>
+        <div class="prev-lb-name">${esc(e.name)}</div>
+        ${cells}
+        <div class="prev-lb-score">${decided>0?`${e.correct}/${decided}`:'-'}</div>
+      </div>`;
+  }).join('');
+}
+
+onSnapshot(query(prevColRef, orderBy('time')), snap => {
+  prevDB = snap.docs.map(d => d.data());
+  renderPrevLB();
+});
+onSnapshot(prevResultsRef, snap => {
+  if (snap.exists()) {
+    const d = snap.data();
+    prevResults = [d.r0||null, d.r1||null, d.r2||null];
+  }
+  renderPrevLB();
+});
+
+// ── 5/2 主要預測 ──
 const deadlineDate = new Date('2026-05-02T07:00:00+08:00');
 
 const SECTIONS = [
@@ -391,17 +514,26 @@ const SECTIONS = [
         teamA: { emoji: '💛', seed: '#4', name: '湖人', home: false },
         teamB: { emoji: '🚀', seed: '#5', name: '火箭', home: true } },
     ]
+  },
+  {
+    label: '東區 G7 決戰', tag: 'G7', tagClass: 'g7tag',
+    matches: [
+      { id: 3, time: '5月3日 (週日) · 上午 8:30', note: 'GAME 7', noteClass: 'g7-note', cardClass: 'g7-card',
+        seriesText: 'Tied 3-3', seriesClass: 'tied',
+        teamA: { emoji: '🍀', seed: '#2', name: '塞爾提克', home: true },
+        teamB: { emoji: '🔔', seed: '#7', name: '76人', home: false } },
+    ]
   }
 ];
 
-const MATCH_COUNT = 3;
+const MATCH_COUNT = 4;
 const MARGIN_LABELS = ['≤10分', '11-20分', '21分+'];
 let votes = new Array(MATCH_COUNT).fill(null), locked = false, myName = '';
 let margins = new Array(MATCH_COUNT).fill(null);
-let results = [null, null, null], latestDB = [];
-let marginResults = [null, null, null];
-let scoreA  = [null, null, null];
-let scoreB  = [null, null, null];
+let results = [null, null, null, null], latestDB = [];
+let marginResults = [null, null, null, null];
+let scoreA  = [null, null, null, null];
+let scoreB  = [null, null, null, null];
 let modifyMode = false, myModified = false, hasSubmitted = false;
 
 function renderMatches() {
@@ -410,16 +542,18 @@ function renderMatches() {
   SECTIONS.forEach(sec => {
     container.innerHTML += `
       <div class="sec">
-        <span class="sec-label" style="color:${sec.tagClass==='east'?'#C8102E':'#1D428A'}">${sec.label}</span>
-        <div class="sec-line" style="color:${sec.tagClass==='east'?'#C8102E':'#1D428A'}"></div>
+        <span class="sec-label" style="color:${sec.tagClass==='east'?'#C8102E':sec.tagClass==='g7tag'?'#7a0a60':'#1D428A'}">${sec.label}</span>
+        <div class="sec-line" style="color:${sec.tagClass==='east'?'#C8102E':sec.tagClass==='g7tag'?'#7a0a60':'#1D428A'}"></div>
         <span class="ctag ${sec.tagClass}">${sec.tag}</span>
       </div>`;
     sec.matches.forEach(m => {
+      const noteClass = m.noteClass || 'card-note';
+      const cardClass = m.cardClass || '';
       container.innerHTML += `
-        <div class="card" data-i="${m.id}" style="animation-delay:${delay}s">
+        <div class="card ${cardClass}" data-i="${m.id}" style="animation-delay:${delay}s">
           <div class="card-time">
             ${m.time}
-            <span class="card-note">${m.note}</span>
+            <span class="${noteClass}">${m.note}</span>
             <span class="series-badge ${m.seriesClass}">${m.seriesText}</span>
           </div>
           <div class="teams">
@@ -656,49 +790,49 @@ window.deleteMe = async function(){
 };
 
 const SYM=['🥇','🥈','🥉'],CLS=['g','s','b'];
-const MATCH_NAMES=['活塞/魔術','騎士/暴龍','湖人/火箭'];
+const MATCH_NAMES=['活塞/魔術','騎士/暴龍','湖人/火箭','塞爾/76人'];
 const PREV_CHAMPS  = [];
 const PREV_RUNNERS = [];
 const PREV_BRONZE  = [];
 
-// 各場系列賽領先隊（熱門隊），順序對應 MATCHES id 0/1/2
-const FAVORITES = ['活塞', '騎士', '湖人'];
+// 各場系列賽領先隊（熱門隊），順序對應 MATCHES id 0/1/2/3
+const FAVORITES = ['活塞', '騎士', '湖人', '塞爾提克'];
 
 // 手寫金句（可覆蓋自動產生）
 const AI_COMMENTS = {};
 
-// 自動金句產生器：根據具體押法生成有梗的金句
+// 自動金句產生器
 function generateComment(votes, margins) {
   const v = votes || [];
   const m = margins || [];
+  const total = v.length;
   const hot = v.filter((t, i) => t === FAVORITES[i]).length;
   const coldPicks = v.map((t, i) => (t && t !== FAVORITES[i]) ? t : null).filter(Boolean);
   const tightAll  = m.length > 0 && m.every(x => x === 0);
   const bigAny    = m.some(x => x === 2);
 
-  // 冷門隊特製吐槽
   const coldQuips = {
     '魔術': 'Banchero 主場要單扛 Cade——這是信仰，不是分析',
-    '暴龍': '多倫多絕地反攻騎士，騎士欠你一個奇蹟',
+    '暴龍': '多倫多絕地反攻，騎士欠你一個奇蹟',
     '火箭': 'Durant 缺陣你都押火箭——要麼天才，要麼輸得心服口服',
+    '76人': 'Embiid 從 1-3 打進 G7 你還敢押費城——這不是賭，這是追隨傳奇',
   };
 
-  if (hot === 3) {
-    if (tightAll) return '三場跟 ESPN 走，差距還全押小分——穩，但季後賽最怕的就是太穩';
+  if (hot === total) {
+    if (tightAll) return '四場全跟熱門走，差距還全押小分——穩，但季後賽最怕的就是太穩';
     if (bigAny)   return '全押領先隊還有場押大比分，自信滿滿——出來混，遲早要還的';
-    return '三場全押領先隊，最安全的選擇——但冠軍不住在安全地帶';
+    return '四場全押領先隊，最安全的選擇——但冠軍不住在安全地帶';
   }
   if (hot === 0) {
     const q = coldPicks.map(t => coldQuips[t] || t).join('；');
-    return `三場全押落後隊——${q}——不是先知就是今晚最貴的教訓`;
+    return `四場全押落後隊——${q}——不是先知就是今晚最貴的教訓`;
   }
   if (coldPicks.length === 1) {
     const ct = coldPicks[0];
-    return coldQuips[ct] || `兩穩一賭押 ${ct}——若爆冷今日 MVP 就是你`;
+    return coldQuips[ct] || `三穩一賭押 ${ct}——若爆冷今日 MVP 就是你`;
   }
-  // 兩場冷門
   const q = coldPicks.map(t => coldQuips[t] || t).join('＋');
-  return `兩場押冷門 ${q}，今天賭桌上你才是主角`;
+  return `押了 ${coldPicks.length} 場冷門：${q}——今天賭桌上你才是主角`;
 }
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -740,7 +874,6 @@ function renderLB(){
 
   document.getElementById('lb-body').innerHTML = scored.map((e,i)=>{
     const r=e._rank;
-    // 有賽果才顯示獎牌，否則只顯示序號
     const rankMedal=decided>0?(SYM[r]||(r+1)):(i+1);
     const rankCls=decided>0?(CLS[r]||''):'';
     const isMe = e.name.toLowerCase()===myName.toLowerCase();
@@ -804,10 +937,10 @@ onSnapshot(query(colRef,orderBy('time')),(snap)=>{
 const unsubResults=onSnapshot(resultsRef,(snap)=>{
   if(snap.exists()){
     const d=snap.data();
-    results=[d.r0||null,d.r1||null,d.r2||null];
-    scoreA=[d.a0||null,d.a1||null,d.a2||null];
-    scoreB=[d.b0||null,d.b1||null,d.b2||null];
-    marginResults=[d.m0??null,d.m1??null,d.m2??null];
+    results=[d.r0||null,d.r1||null,d.r2||null,d.r3||null];
+    scoreA=[d.a0||null,d.a1||null,d.a2||null,d.a3||null];
+    scoreB=[d.b0||null,d.b1||null,d.b2||null,d.b3||null];
+    marginResults=[d.m0??null,d.m1??null,d.m2??null,d.m3??null];
     updateCardScores();
     if(results.every(r=>r!==null)){
       const injBox=document.querySelector('.injury-box');

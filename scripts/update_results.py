@@ -1,9 +1,12 @@
 import requests
 
-# 台灣 5/2 的比賽 = 美國東部 5/1 → GAME_DATE = "20260501"
-GAME_DATE = "20260501"
+# 台灣 5/2 的比賽 = 美東 5/1；台灣 5/3 的 G7 = 美東 5/2
+# ESPN 支援多日期查詢，用逗號分隔
+GAME_DATE_1 = "20260501"
+GAME_DATE_2 = "20260502"
 
-ESPN_URL = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={GAME_DATE}&seasontype=3"
+ESPN_URL_1 = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={GAME_DATE_1}&seasontype=3"
+ESPN_URL_2 = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={GAME_DATE_2}&seasontype=3"
 
 TEAM_MAP = {
     "Orlando Magic": "魔術",
@@ -24,13 +27,14 @@ TEAM_MAP = {
     "Portland Trail Blazers": "拓荒者",
 }
 
-# MATCHES 的 key = match id (0,1,2)
-# a = Team A（第一隊，客場）, b = Team B（第二隊，主場）
+# MATCHES 的 key = match id (0,1,2,3)
+# a = Team A（第一隊）, b = Team B（第二隊）
 # 對應 Firestore 欄位: r{id}=勝隊, a{id}=A隊分數, b{id}=B隊分數, m{id}=勝分差距
 MATCHES = {
-    0: ("活塞", "魔術"),   # DET @ ORL G6
-    1: ("騎士", "暴龍"),   # CLE @ TOR G6
-    2: ("湖人", "火箭"),   # LAL @ HOU G6
+    0: ("活塞", "魔術"),     # DET @ ORL G6  (美東 5/1)
+    1: ("騎士", "暴龍"),     # CLE @ TOR G6  (美東 5/1)
+    2: ("湖人", "火箭"),     # LAL @ HOU G6  (美東 5/1)
+    3: ("塞爾提克", "76人"), # BOS vs PHI G7 (美東 5/2)
 }
 
 FIRESTORE_URL = (
@@ -62,10 +66,15 @@ def get_result(event):
     return winner, score_map, comps
 
 def main():
-    data = requests.get(ESPN_URL, timeout=10).json()
-    results = {i: {"winner": None, "scoreA": None, "scoreB": None, "margin": None} for i in range(3)}
+    results = {i: {"winner": None, "scoreA": None, "scoreB": None, "margin": None} for i in range(4)}
 
-    for event in data.get("events", []):
+    # 抓兩天的賽程（5/1 的 G6 × 3 + 5/2 的 G7 × 1）
+    all_events = []
+    for url in [ESPN_URL_1, ESPN_URL_2]:
+        data = requests.get(url, timeout=10).json()
+        all_events.extend(data.get("events", []))
+
+    for event in all_events:
         comps = event["competitions"][0]["competitors"]
         team_names = {TEAM_MAP.get(c["team"]["displayName"]) for c in comps}
 
@@ -88,7 +97,7 @@ def main():
 
     fields = {}
     mask_parts = []
-    for i in range(3):
+    for i in range(4):
         r = results[i]
         fields[f"r{i}"] = {"stringValue": r["winner"]} if r["winner"] else {"nullValue": None}
         fields[f"a{i}"] = {"integerValue": str(r["scoreA"])} if r["scoreA"] is not None else {"nullValue": None}
