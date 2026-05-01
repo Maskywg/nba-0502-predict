@@ -387,7 +387,7 @@ const prevColRef = collection(fsdb, 'nba_0501_predict');
 const prevResultsRef = doc(fsdb, 'game_results', 'nba_0501');
 const PREV_MATCH_NAMES = ['尼克/老鷹', '塞爾/76人', '灰狼/金塊'];
 const PREV_SYM = ['🥇','🥈','🥉'], PREV_CLS = ['g','s','b'];
-let prevResults = [null, null, null], prevDB = [];
+let prevResults = [null, null, null], prevMarginResults = [null, null, null], prevDB = [];
 
 function renderPrevLB() {
   const decided = prevResults.filter(r => r !== null).length;
@@ -400,14 +400,30 @@ function renderPrevLB() {
   if (!prevDB.length) return;
 
   const scored = prevDB.map(e => {
-    let correct = 0;
-    (e.votes||[]).forEach((v, i) => { if (prevResults[i] && v === prevResults[i]) correct++; });
-    return { ...e, correct };
-  }).sort((a, b) => b.correct - a.correct || a.time - b.time);
+    let correct = 0, marginCorrect = 0, marginDistance = 0;
+    (e.votes||[]).forEach((v, i) => {
+      if (prevResults[i] && v === prevResults[i]) {
+        correct++;
+        if (prevMarginResults[i] !== null && e.margins && e.margins[i] != null) {
+          if (e.margins[i] === prevMarginResults[i]) marginCorrect++;
+          marginDistance += Math.abs(e.margins[i] - prevMarginResults[i]);
+        }
+      }
+    });
+    return { ...e, correct, marginCorrect, marginDistance };
+  }).sort((a, b) =>
+    b.correct - a.correct ||
+    b.marginCorrect - a.marginCorrect ||
+    a.marginDistance - b.marginDistance ||
+    a.time - b.time
+  );
 
   let rank = 0;
   scored.forEach((e, i) => {
-    if (i === 0 || e.correct !== scored[i-1].correct) rank = i;
+    if (i === 0 ||
+        e.correct !== scored[i-1].correct ||
+        e.marginCorrect !== scored[i-1].marginCorrect ||
+        e.marginDistance !== scored[i-1].marginDistance) rank = i;
     e._rank = rank;
   });
 
@@ -445,6 +461,7 @@ onSnapshot(prevResultsRef, snap => {
   if (snap.exists()) {
     const d = snap.data();
     prevResults = [d.r0||null, d.r1||null, d.r2||null];
+    prevMarginResults = [d.m0??null, d.m1??null, d.m2??null];
   }
   renderPrevLB();
 });
