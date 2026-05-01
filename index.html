@@ -473,6 +473,8 @@ onSnapshot(prevResultsRef, snap => {
 
 // ── 5/2 主要預測 ──
 const deadlineDate = new Date('2026-05-02T07:00:00+08:00');
+// ── G7 獨立截止（5/3 塞/76人，台灣時間 09:00 前可補選） ──
+const g7DeadlineDate = new Date('2026-05-03T09:00:00+08:00');
 
 const SECTIONS = [
   {
@@ -510,7 +512,7 @@ const SECTIONS = [
 
 const MATCH_COUNT = 4;
 const MARGIN_LABELS = ['≤10分', '11-20分', '21分+'];
-let votes = new Array(MATCH_COUNT).fill(null), locked = false, myName = '';
+let votes = new Array(MATCH_COUNT).fill(null), locked = false, g7Locked = false, myName = '';
 let margins = new Array(MATCH_COUNT).fill(null);
 let results = [null, null, null, null], latestDB = [];
 let marginResults = [null, null, null, null];
@@ -600,9 +602,12 @@ function updateCardScores() {
 function pad(n){ return String(n).padStart(2,'0'); }
 function tick(){
   const diff = deadlineDate - Date.now();
-  if(diff <= 0){ lockAll(); return; }
-  const h=Math.floor(diff/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
-  document.getElementById('countdown').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  if(diff <= 0){ lockAll(); }
+  else {
+    const h=Math.floor(diff/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
+    document.getElementById('countdown').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  if(g7DeadlineDate - Date.now() <= 0){ lockG7(); }
 }
 setInterval(tick, 1000); tick();
 
@@ -616,12 +621,39 @@ function lockAll(){
   document.getElementById('pname').disabled = true;
   document.getElementById('subbtn').disabled = true;
   document.getElementById('modify-btn').style.display = 'none';
-  document.querySelectorAll('.vbtn').forEach(b => b.disabled = true);
-  document.querySelectorAll('.mbtn').forEach(b => b.disabled = true);
-  document.querySelectorAll('.vote-row').forEach(v => {
-    const o = document.createElement('div');
-    o.className = 'lock-overlay'; o.textContent = '🔒 已截止'; v.appendChild(o);
+  // G7 卡片（index 3）若尚未截止，保留可選狀態
+  document.querySelectorAll('.vbtn').forEach(b => {
+    const card = b.closest('[data-i]');
+    if(!card || parseInt(card.dataset.i) !== 3 || g7Locked) b.disabled = true;
   });
+  document.querySelectorAll('.mbtn').forEach(b => {
+    const card = b.closest('[data-i]');
+    if(!card || parseInt(card.dataset.i) !== 3 || g7Locked) b.disabled = true;
+  });
+  document.querySelectorAll('.vote-row').forEach(v => {
+    const card = v.closest('[data-i]');
+    const isG7 = card && parseInt(card.dataset.i) === 3;
+    if(!isG7 || g7Locked){
+      const o = document.createElement('div');
+      o.className = 'lock-overlay'; o.textContent = '🔒 已截止'; v.appendChild(o);
+    }
+  });
+}
+
+function lockG7(){
+  if(g7Locked) return; g7Locked = true;
+  const g7Wrap = document.getElementById('g7-extra-wrap');
+  if(g7Wrap) g7Wrap.style.display = 'none';
+  const g7Card = document.querySelector('[data-i="3"]');
+  if(g7Card){
+    g7Card.querySelectorAll('.vbtn,.mbtn').forEach(b => b.disabled = true);
+    g7Card.querySelectorAll('.vote-row').forEach(v => {
+      if(!v.querySelector('.lock-overlay')){
+        const o = document.createElement('div');
+        o.className = 'lock-overlay'; o.textContent = '🔒 G7 已截止'; v.appendChild(o);
+      }
+    });
+  }
 }
 
 function restoreMyStatus(nameToCheck){
@@ -661,7 +693,7 @@ function restoreMyStatus(nameToCheck){
   // 已提交但 G7 尚未預測 → 顯示補加按鈕
   const hasG7 = me.votes && me.votes[3];
   const g7Wrap = document.getElementById('g7-extra-wrap');
-  if(g7Wrap) g7Wrap.style.display = (!locked && !hasG7 && !modifyMode) ? 'block' : 'none';
+  if(g7Wrap) g7Wrap.style.display = (!g7Locked && !hasG7 && !modifyMode) ? 'block' : 'none';
 }
 
 document.getElementById('pname').addEventListener('input', function(){
@@ -669,7 +701,7 @@ document.getElementById('pname').addEventListener('input', function(){
 });
 
 window.pick = function(idx, team, side, btn){
-  if(locked) return;
+  if(idx === 3 ? g7Locked : locked) return;
   document.querySelector(`.card[data-i="${idx}"]`).querySelectorAll('.vbtn').forEach(b => b.classList.remove('sel-l','sel-r'));
   votes[idx] = team;
   btn.classList.add(side==='l'?'sel-l':'sel-r');
@@ -678,7 +710,7 @@ window.pick = function(idx, team, side, btn){
 };
 
 window.pickMargin = function(idx, val, btn){
-  if(locked) return;
+  if(idx === 3 ? g7Locked : locked) return;
   document.querySelectorAll(`.mbtn[data-mid="${idx}"]`).forEach(b => b.classList.remove('sel'));
   margins[idx] = val;
   btn.classList.add('sel');
@@ -761,7 +793,7 @@ window.confirmModify = async function(){
 
 // ── 補加 G7 預測（已提交3場者使用，不消耗修改機會） ──
 window.submitG7Extra = async function(){
-  if(locked){ toast('⛔ 已截止！'); return; }
+  if(g7Locked){ toast('⛔ G7 已截止！'); return; }
   if(!myName){ toast('⚠️ 請先填入名字！'); return; }
   if(!votes[3]){ toast('⚠️ 請先選擇 G7 勝隊！'); return; }
   if(margins[3]===null){ toast('⚠️ 請先選擇 G7 差距！'); return; }
