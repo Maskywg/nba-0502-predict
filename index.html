@@ -209,6 +209,9 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 .intro-quote{font-size:17px;font-weight:900;color:#1a2a3a;line-height:1.6;margin-bottom:12px;font-style:italic}
 .intro-sour{font-size:13px;color:#5577aa;line-height:1.8;border-top:1px dashed rgba(29,66,138,.2);padding-top:10px}
 .intro-sour strong{color:#1D428A}
+.top-tools{display:flex;justify-content:flex-end;padding:16px 0 0;animation:dn .45s ease both}
+.lang-toggle{border:1px solid var(--border);background:#fff;color:#1D428A;border-radius:100px;padding:9px 15px;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:900;letter-spacing:.8px;cursor:pointer;box-shadow:0 4px 14px rgba(29,66,138,.12);transition:transform .18s,box-shadow .18s}
+.lang-toggle:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(29,66,138,.18)}
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gold);color:#fff;font-weight:700;padding:13px 26px;border-radius:100px;font-size:14px;transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:100;white-space:nowrap;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
@@ -216,12 +219,16 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 <body>
 <div class="wrap">
 
+<div class="top-tools">
+  <button class="lang-toggle" id="lang-toggle" type="button">ENGLISH</button>
+</div>
+
 <!-- 昨日 5/1 冠軍公告 -->
 <div class="champ-banner">
   <div class="champ-top">
     <div class="champ-trophy">🏆</div>
     <div>
-      <div class="champ-title">🎉 昨日 5/1 預測榜單</div>
+      <div class="champ-title" id="champ-title">🎉 昨日 5/1 預測榜單</div>
       <div class="champ-date" id="champ-result-line">結果載入中…</div>
     </div>
   </div>
@@ -234,7 +241,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 <a class="prev-link" href="https://maskywg.github.io/nba-0501-predict/" target="_blank">
   <div class="prev-icon">📊</div>
   <div class="prev-text">
-    <div class="prev-title">昨日 5/1 預測結果</div>
+    <div class="prev-title" id="prev-title">昨日 5/1 預測結果</div>
     <div class="prev-url">maskywg.github.io/nba-0501-predict/</div>
   </div>
   <div class="prev-arrow">→</div>
@@ -243,28 +250,28 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 <a class="codex-link" href="https://maskywg.github.io/codex2026/" target="_blank">
   <div class="codex-icon">📊</div>
   <div class="codex-text">
-    <div class="codex-title">🔥 2026 季後賽戰力分析</div>
-    <div class="codex-sub">16 支隊伍完整評分 · 傷兵影響 · 板凳暴徒指數 →</div>
+    <div class="codex-title" id="analysis-title">🔥 2026 季後賽戰力分析</div>
+    <div class="codex-sub" id="analysis-sub">16 支隊伍完整評分 · 傷兵影響 · 板凳暴徒指數 →</div>
   </div>
 </a>
 <a class="codex-link" href="https://www.espn.com/nba/playoff-bracket" target="_blank" style="background:linear-gradient(135deg,#f0fff4,#e6ffed);border-color:#90cfa0;">
   <div class="codex-icon">🏆</div>
   <div class="codex-text">
-    <div class="codex-title" style="color:#1a7a3a;">ESPN 季後賽對陣表</div>
-    <div class="codex-sub" style="color:#2a9a4a;">查看完整季後賽 bracket →</div>
+    <div class="codex-title" id="espn-title" style="color:#1a7a3a;">ESPN 季後賽對陣表</div>
+    <div class="codex-sub" id="espn-sub" style="color:#2a9a4a;">查看完整季後賽 bracket →</div>
   </div>
 </a>
 
 <header>
   <div class="badge">🏀 NBA PLAYOFFS 2026 · 5/2–5/3</div>
-  <h1>季後賽預測</h1>
-  <p class="sub">三場 G6 + 一場 G7 決戰 · 截止：5月2日 上午 7:00</p>
+  <h1 id="main-title">季後賽預測</h1>
+  <p class="sub" id="main-sub">三場 G6 + 一場 G7 決戰 · 截止：5月2日 上午 7:00</p>
 </header>
 
 <div class="daily-intro">
-  <div class="intro-kicker">🗓 5月2日–3日 · 本日賽程引言</div>
-  <div class="intro-quote">「Luka 缺陣，Durant 可能缺陣，Embiid 從 1-3 打進 G7——今天的主角不是超級巨星，是那些沒有退路的人。」</div>
-  <div class="intro-sour">
+  <div class="intro-kicker" id="intro-kicker">🗓 5月2日–3日 · 本日賽程引言</div>
+  <div class="intro-quote" id="intro-quote">「Luka 缺陣，Durant 可能缺陣，Embiid 從 1-3 打進 G7——今天的主角不是超級巨星，是那些沒有退路的人。」</div>
+  <div class="intro-sour" id="intro-sour">
     <strong>Banchero</strong> 要在奧蘭多主場用一己之力擋下 Cade 的封關大軍，G5 各砍 45 分的史詩還沒說完；<strong>暴龍</strong>兩大全明星 Ingram＋Barnes 雙雙帶傷，生死戰靠什麼上？靠氣勢嗎；<strong>湖人</strong>要在火箭主場沒有 Luka 完成封關，Reaves 你的時代到了；<strong>G7 波士頓</strong>，Embiid 從 1-3 到 3-3，這是費城重生還是塞爾提克的終局清算——這場的重量不是統計數字能算的。
   </div>
 </div>
@@ -279,7 +286,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 </div>
 
 <div class="injury-box">
-  <div class="injury-title">🚑 傷兵報告</div>
+  <div class="injury-title" id="injury-title">🚑 傷兵報告</div>
 
   <div class="injury-game">
     <div class="injury-matchup">活塞 vs 魔術（G6 · ORL leads 3-2 · 奧蘭多主場）</div>
@@ -315,7 +322,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 </div>
 
 <div class="name-box">
-  <label>📝 請輸入你的名字</label>
+  <label id="name-label">📝 請輸入你的名字</label>
   <input type="text" id="pname" placeholder="你的暱稱..." maxlength="20">
 </div>
 
@@ -324,10 +331,10 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 <!-- 補加 G7 預測按鈕（已提交3場、尚未預測G7者才顯示） -->
 <div id="g7-extra-wrap" style="display:none;margin-top:6px;margin-bottom:6px;text-align:center;animation:slideUp .4s ease both">
   <div id="g7-extra-desc" style="font-size:12px;color:var(--muted);margin-bottom:10px">✅ 你已提交 5/2 三場預測 · 補加 G7 不消耗修改機會</div>
-  <button onclick="submitG7Extra()" style="background:linear-gradient(135deg,#7a0a60,#b01090);color:#fff;border:none;padding:15px 44px;border-radius:100px;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(120,0,100,.3)">📌 補加 G7 預測</button>
+  <button id="g7-extra-btn" onclick="submitG7Extra()" style="background:linear-gradient(135deg,#7a0a60,#b01090);color:#fff;border:none;padding:15px 44px;border-radius:100px;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(120,0,100,.3)">📌 補加 G7 預測</button>
 </div>
 
-<div class="rules-box">
+<div class="rules-box" id="rules-box">
   <strong>📋 預測規則</strong><br>
   · 截止時間前每人可提交一次預測<br>
   · 提交後享有 <strong>一次免費修改</strong> 機會，修改後不可再更改<br>
@@ -335,7 +342,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
   · 截止時間：5月2日 上午 07:00，截止後鎖定無法修改
 </div>
 <div class="submit-wrap">
-  <p class="submit-hint">🎁 提交後送NBA球星海報</p>
+  <p class="submit-hint" id="submit-hint">🎁 提交後送NBA球星海報</p>
   <button class="sub-btn" id="subbtn" onclick="submitPrediction()">🏀 提交預測</button>
   <div class="modify-wrap" id="modify-wrap">
     <button class="modify-btn" id="modify-btn" onclick="enterModifyMode()">✏️ 修改預測（剩 1 次）</button>
@@ -344,23 +351,23 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 </div>
 <div class="poster-link" id="poster-link">
   <a class="poster-btn" href="https://drive.google.com/drive/folders/1yfOZwFa9DHQKr-RhYd8GiflB9nsJNW7V?usp=drive_link" target="_blank">
-    🎁 領取 5/1 對戰組合海報
+    <span id="poster-text">🎁 領取 5/1 對戰組合海報</span>
   </a>
 </div>
 
 <div id="lb-section">
   <div class="lb-top">
-    <div class="lb-title">🏆 同學預測榜</div>
+    <div class="lb-title" id="lb-title">🏆 同學預測榜</div>
     <div class="lb-cnt" id="lb-cnt">載入中...</div>
   </div>
   <div class="result-row" id="result-row"></div>
   <div class="lb-table">
     <div class="lb-head">
-      <div></div><div>名字</div>
-      <div class="hpick">活塞/魔術</div>
-      <div class="hpick">騎士/暴龍</div>
-      <div class="hpick">湖人/火箭</div>
-      <div class="hpick">塞爾/76人</div>
+      <div></div><div id="lb-head-name">名字</div>
+      <div class="hpick" id="lb-head-0">活塞/魔術</div>
+      <div class="hpick" id="lb-head-1">騎士/暴龍</div>
+      <div class="hpick" id="lb-head-2">湖人/火箭</div>
+      <div class="hpick" id="lb-head-3">塞爾/76人</div>
       <div></div>
     </div>
     <div id="lb-body"><div class="lb-empty">🏀 連線中...</div></div>
@@ -394,14 +401,234 @@ const prevResultsRef = doc(fsdb, 'game_results', 'nba_0501');
 const PREV_MATCH_NAMES = ['尼克/老鷹', '塞爾/76人', '灰狼/金塊'];
 const PREV_SYM = ['🥇','🥈','🥉'], PREV_CLS = ['g','s','b'];
 let prevResults = [null, null, null], prevMarginResults = [null, null, null], prevDB = [];
+let currentLang = localStorage.getItem('nba0502_lang') || 'zh';
+
+const I18N = {
+  zh: {
+    langButton: 'ENGLISH',
+    title: '🏀 NBA 季後賽 5/2 預測',
+    champTitle: '🎉 昨日 5/1 預測榜單',
+    loadingResults: '結果載入中…',
+    loading: '⏳ 載入中',
+    waitingResults: '⏳ 賽果出爐後公布',
+    prevTitle: '昨日 5/1 預測結果',
+    analysisTitle: '🔥 2026 季後賽戰力分析',
+    analysisSub: '16 支隊伍完整評分 · 傷兵影響 · 板凳暴徒指數 →',
+    espnTitle: 'ESPN 季後賽對陣表',
+    espnSub: '查看完整季後賽 bracket →',
+    mainTitle: '季後賽預測',
+    mainSub: '三場 G6 + 一場 G7 決戰 · 截止：5月2日 上午 7:00',
+    introKicker: '🗓 5月2日–3日 · 本日賽程引言',
+    introQuote: '「Luka 缺陣，Durant 可能缺陣，Embiid 從 1-3 打進 G7——今天的主角不是超級巨星，是那些沒有退路的人。」',
+    introSour: '<strong>Banchero</strong> 要在奧蘭多主場用一己之力擋下 Cade 的封關大軍，G5 各砍 45 分的史詩還沒說完；<strong>暴龍</strong>兩大全明星 Ingram＋Barnes 雙雙帶傷，生死戰靠什麼上？靠氣勢嗎；<strong>湖人</strong>要在火箭主場沒有 Luka 完成封關，Reaves 你的時代到了；<strong>G7 波士頓</strong>，Embiid 從 1-3 到 3-3，這是費城重生還是塞爾提克的終局清算——這場的重量不是統計數字能算的。',
+    openTitle: '下注截止：5月2日 上午 07:00',
+    openSub: '截止前可隨時修改，提交後即時顯示在排行榜',
+    closedTitle: '⛔ 預測已截止',
+    closedSub: '下注時間結束，以下為最終預測結果',
+    expired: '已截止',
+    locked: '🔒 已截止',
+    g7Locked: '🔒 G7 已截止',
+    injuryTitle: '🚑 傷兵報告',
+    nameLabel: '📝 請輸入你的名字',
+    namePlaceholder: '你的暱稱...',
+    g7Existing: '✅ 你已提交 5/2 三場預測 · 補加 G7 不消耗修改機會',
+    g7New: '🆕 5/2 三場已截止 · 仍可加入 G7 單場預測',
+    g7Button: '📌 補加 G7 預測',
+    rules: '<strong>📋 預測規則</strong><br>· 截止時間前每人可提交一次預測<br>· 提交後享有 <strong>一次免費修改</strong> 機會，修改後不可再更改<br>· 勝分差距必填，同分時差距猜中者優先<br>· 截止時間：5月2日 上午 07:00，截止後鎖定無法修改',
+    submitHint: '🎁 提交後送NBA球星海報',
+    submit: '🏀 提交預測',
+    modify: '✏️ 修改預測（剩 1 次）',
+    confirmModify: '✏️ 確認修改',
+    modifyUsed: '✅ 修改機會已使用',
+    poster: '🎁 領取 5/1 對戰組合海報',
+    lbTitle: '🏆 同學預測榜',
+    name: '名字',
+    connecting: '🏀 連線中...',
+    noVotes: '🏀 還沒有人投票，快來第一個！',
+    participants: n => `${n} 人參與`,
+    prevResultLine: s => `5/1 結果：${s}`,
+    winnerTag: r => `✓ ${teamLabel(r)} 勝`,
+    pendingTag: i => `⏳ ${matchName(i)}`,
+    seed: s => `${s} 種子`,
+    home: '主場',
+    away: '客場',
+    voteQuestion: '🏆 你看好誰贏這場？',
+    marginQuestion: '📏 勝分差距（同分決勝）',
+    finalScore: '最終比分',
+    notFilled: '未填',
+    correct: '正確',
+    marginHit: n => `🎯 差距${n}準`,
+    me: '← 你',
+    prevChamp: '👑 昨日冠軍',
+    prevRunner: '🥈 昨日亞軍',
+    prevBronze: '🥉 昨日銅牌',
+    great: '厲害！',
+    delete: '🗑 刪除',
+    missingGames: n => `⚠️ 還有 ${n} 場未選！`,
+    missingMargins: n => `⚠️ 還有 ${n} 場未選差距！`,
+    lockedToast: '⛔ 已截止，無法再修改！',
+    lockedModifyToast: '⛔ 已截止，無法修改！',
+    lockedShortToast: '⛔ 已截止！',
+    needName: '⚠️ 請輸入你的名字！',
+    needNameTop: '⚠️ 請先在上方填入你的名字！',
+    needNameShort: '⚠️ 請先填入名字！',
+    submitted: '✅ 預測已送出！',
+    modifiedUsedToast: '✅ 修改機會已使用過了',
+    noRecord: '⚠️ 查無此名字的預測，請確認名字是否正確',
+    modifyMode: '🔓 已解鎖！修改選擇後點「確認修改」，僅限一次',
+    modifyDone: '✅ 修改已確認！修改機會已用完',
+    g7LockedToast: '⛔ G7 已截止！',
+    needG7Winner: '⚠️ 請先選擇 G7 勝隊！',
+    needG7Margin: '⚠️ 請先選擇 G7 差距！',
+    g7Added: '✅ G7 預測已補加！',
+    g7Submitted: '✅ G7 預測已送出！',
+    deleteConfirm: name => `確定要刪除「${name}」的預測嗎？`,
+    deleted: '🗑 預測已刪除',
+    sectionEast: '東區首輪',
+    sectionWest: '西區首輪',
+    sectionG7: '東區 G7 決戰',
+  },
+  en: {
+    langButton: '中文',
+    title: '🏀 NBA Playoffs 5/2 Predictions',
+    champTitle: '🎉 Yesterday 5/1 Prediction Standings',
+    loadingResults: 'Loading results...',
+    loading: '⏳ Loading',
+    waitingResults: '⏳ Winners will be shown after results are final',
+    prevTitle: 'Yesterday 5/1 Results',
+    analysisTitle: '🔥 2026 Playoff Power Rankings',
+    analysisSub: 'Full 16-team ratings · injury impact · bench-mob index →',
+    espnTitle: 'ESPN Playoff Bracket',
+    espnSub: 'View the full playoff bracket →',
+    mainTitle: 'Playoff Predictions',
+    mainSub: 'Three Game 6s + one Game 7 · Deadline: May 2, 7:00 AM',
+    introKicker: '🗓 May 2-3 · Today\'s Slate',
+    introQuote: '"No Luka, Durant possibly out, Embiid has dragged it from 1-3 to Game 7. Today is not about superstars. It is about teams with no room left."',
+    introSour: '<strong>Banchero</strong> has to hold off Cade\'s closeout push in Orlando after both dropped 45 in Game 5; the <strong>Raptors</strong> have Ingram and Barnes both banged up in an elimination game; the <strong>Lakers</strong> try to close in Houston without Luka, which means it is Reaves time; and <strong>Game 7 in Boston</strong> asks whether Embiid\'s 1-3 comeback becomes Philadelphia\'s rebirth or Boston\'s final reckoning.',
+    openTitle: 'Prediction deadline: May 2, 7:00 AM',
+    openSub: 'You can edit before the deadline. Submissions appear live on the leaderboard.',
+    closedTitle: '⛔ Predictions closed',
+    closedSub: 'The deadline has passed. Final predictions are shown below.',
+    expired: 'Closed',
+    locked: '🔒 Closed',
+    g7Locked: '🔒 G7 closed',
+    injuryTitle: '🚑 Injury Report',
+    nameLabel: '📝 Enter your name',
+    namePlaceholder: 'Your nickname...',
+    g7Existing: '✅ You submitted the first three games · Add G7 without using your edit',
+    g7New: '🆕 The first three games are closed · You can still enter the G7 pick',
+    g7Button: '📌 Add G7 Pick',
+    rules: '<strong>📋 Prediction Rules</strong><br>· One submission per person before the deadline<br>· After submitting, you get <strong>one free edit</strong><br>· Pick a winner and margin range for every game<br>· Deadline: May 2, 7:00 AM. Picks lock after the deadline',
+    submitHint: '🎁 Submit to receive NBA star posters',
+    submit: '🏀 Submit Picks',
+    modify: '✏️ Edit Picks (1 left)',
+    confirmModify: '✏️ Confirm Edit',
+    modifyUsed: '✅ Edit already used',
+    poster: '🎁 Claim 5/1 matchup posters',
+    lbTitle: '🏆 Class Leaderboard',
+    name: 'Name',
+    connecting: '🏀 Connecting...',
+    noVotes: '🏀 No picks yet. Be the first.',
+    participants: n => `${n} players`,
+    prevResultLine: s => `5/1 results: ${s}`,
+    winnerTag: r => `✓ ${teamLabel(r)} won`,
+    pendingTag: i => `⏳ ${matchName(i)}`,
+    seed: s => `${s} seed`,
+    home: 'Home',
+    away: 'Away',
+    voteQuestion: '🏆 Who wins this game?',
+    marginQuestion: '📏 Winning margin (tiebreaker)',
+    finalScore: 'Final score',
+    notFilled: 'Missing',
+    correct: 'correct',
+    marginHit: n => `🎯 ${n} margin hit${n > 1 ? 's' : ''}`,
+    me: '← You',
+    prevChamp: '👑 Yesterday champion',
+    prevRunner: '🥈 Yesterday runner-up',
+    prevBronze: '🥉 Yesterday bronze',
+    great: 'Nice!',
+    delete: '🗑 Delete',
+    missingGames: n => `⚠️ ${n} game${n > 1 ? 's' : ''} still missing!`,
+    missingMargins: n => `⚠️ ${n} margin pick${n > 1 ? 's' : ''} still missing!`,
+    lockedToast: '⛔ Closed. You cannot edit now.',
+    lockedModifyToast: '⛔ Closed. Editing is unavailable.',
+    lockedShortToast: '⛔ Closed.',
+    needName: '⚠️ Please enter your name.',
+    needNameTop: '⚠️ Enter your name above first.',
+    needNameShort: '⚠️ Enter your name first.',
+    submitted: '✅ Picks submitted.',
+    modifiedUsedToast: '✅ Your edit has already been used.',
+    noRecord: '⚠️ No prediction found for this name. Check the spelling.',
+    modifyMode: '🔓 Unlocked. Change your picks, then tap Confirm Edit. One edit only.',
+    modifyDone: '✅ Edit confirmed. Your edit is now used.',
+    g7LockedToast: '⛔ G7 is closed.',
+    needG7Winner: '⚠️ Pick a G7 winner first.',
+    needG7Margin: '⚠️ Pick a G7 margin first.',
+    g7Added: '✅ G7 pick added.',
+    g7Submitted: '✅ G7 pick submitted.',
+    deleteConfirm: name => `Delete ${name}'s prediction?`,
+    deleted: '🗑 Prediction deleted.',
+    sectionEast: 'East First Round',
+    sectionWest: 'West First Round',
+    sectionG7: 'East Game 7',
+  }
+};
+
+const TEAM_LABELS = {
+  zh: {'活塞':'活塞','魔術':'魔術','騎士':'騎士','暴龍':'暴龍','湖人':'湖人','火箭':'火箭','塞爾提克':'塞爾提克','76人':'76人','尼克':'尼克','老鷹':'老鷹','灰狼':'灰狼','金塊':'金塊'},
+  en: {'活塞':'Pistons','魔術':'Magic','騎士':'Cavaliers','暴龍':'Raptors','湖人':'Lakers','火箭':'Rockets','塞爾提克':'Celtics','76人':'76ers','尼克':'Knicks','老鷹':'Hawks','灰狼':'Timberwolves','金塊':'Nuggets'}
+};
+const MATCH_NAMES_BY_LANG = {
+  zh: ['活塞/魔術','騎士/暴龍','湖人/火箭','塞爾/76人'],
+  en: ['Pistons/Magic','Cavaliers/Raptors','Lakers/Rockets','Celtics/76ers']
+};
+const PREV_MATCH_NAMES_BY_LANG = {
+  zh: PREV_MATCH_NAMES,
+  en: ['Knicks/Hawks', 'Celtics/76ers', 'Timberwolves/Nuggets']
+};
+const MARGIN_LABELS_BY_LANG = {
+  zh: ['≤10分', '11-20分', '21分+'],
+  en: ['≤10 pts', '11-20 pts', '21+ pts']
+};
+const INJURIES = [
+  { matchup: { zh: '活塞 vs 魔術（G6 · ORL leads 3-2 · 奧蘭多主場）', en: 'Pistons vs Magic (G6 · ORL leads 3-2 · Orlando home)' },
+    tags: [
+      { cls: 'i-q', zh: '❓ Franz Wagner QUESTIONABLE（魔術，小腿不適）', en: '❓ Franz Wagner QUESTIONABLE (Magic, calf soreness)' },
+      { cls: 'i-doubt', zh: '⚠️ Jonathan Isaac DOUBTFUL（魔術，膝蓋傷勢）', en: '⚠️ Jonathan Isaac DOUBTFUL (Magic, knee injury)' },
+    ] },
+  { matchup: { zh: '騎士 vs 暴龍（G6 · CLE leads 3-2 · 多倫多主場）', en: 'Cavaliers vs Raptors (G6 · CLE leads 3-2 · Toronto home)' },
+    tags: [
+      { cls: 'i-out', zh: '❌ Immanuel Quickley OUT（暴龍，賽季報銷）', en: '❌ Immanuel Quickley OUT (Raptors, season-ending injury)' },
+      { cls: 'i-q', zh: '❓ Brandon Ingram QUESTIONABLE（暴龍，右腳跟發炎）', en: '❓ Brandon Ingram QUESTIONABLE (Raptors, right heel inflammation)' },
+      { cls: 'i-q', zh: '❓ Scottie Barnes QUESTIONABLE（暴龍，右股四頭肌）', en: '❓ Scottie Barnes QUESTIONABLE (Raptors, right quadriceps)' },
+    ] },
+  { matchup: { zh: '湖人 vs 火箭（G6 · LAL leads 3-2 · 休士頓主場）', en: 'Lakers vs Rockets (G6 · LAL leads 3-2 · Houston home)' },
+    tags: [
+      { cls: 'i-out', zh: '❌ Luka Dončić OUT（湖人，右腿後側拉傷）', en: '❌ Luka Dončić OUT (Lakers, right hamstring strain)' },
+      { cls: 'i-doubt', zh: '⚠️ Kevin Durant DOUBTFUL（火箭，腳踝骨挫傷）', en: '⚠️ Kevin Durant DOUBTFUL (Rockets, ankle bone bruise)' },
+    ] },
+  { matchup: { zh: '塞爾提克 vs 76人（G7 · Tied 3-3 · 波士頓主場）', en: 'Celtics vs 76ers (G7 · tied 3-3 · Boston home)' },
+    tags: [
+      { cls: 'i-q', zh: '❓ Kristaps Porziņģis QUESTIONABLE（塞爾提克，小腿）', en: '❓ Kristaps Porziņģis QUESTIONABLE (Celtics, calf)' },
+    ] },
+];
+
+function t(key, ...args) {
+  const value = I18N[currentLang][key] ?? I18N.zh[key] ?? key;
+  return typeof value === 'function' ? value(...args) : value;
+}
+function teamLabel(name) { return TEAM_LABELS[currentLang][name] || name; }
+function matchName(i) { return MATCH_NAMES_BY_LANG[currentLang][i] || MATCH_NAMES_BY_LANG.zh[i]; }
+function prevMatchName(i) { return PREV_MATCH_NAMES_BY_LANG[currentLang][i] || PREV_MATCH_NAMES[i]; }
+function marginLabel(i) { return MARGIN_LABELS_BY_LANG[currentLang][i]; }
 
 function renderPrevLB() {
   const decided = prevResults.filter(r => r !== null).length;
   const resultStr = prevResults.map((r, i) =>
-    r ? `✓ ${r}` : `⏳ ${PREV_MATCH_NAMES[i]}`
-  ).join('　');
+    r ? `✓ ${teamLabel(r)}` : `⏳ ${prevMatchName(i)}`
+  ).join(currentLang === 'zh' ? '　' : ' · ');
   document.getElementById('champ-result-line').textContent =
-    decided > 0 ? `5/1 結果：${resultStr}` : '賽果載入中…';
+    decided > 0 ? t('prevResultLine', resultStr) : t('loadingResults');
 
   if (!prevDB.length) return;
 
@@ -439,7 +666,7 @@ function renderPrevLB() {
 
   if (decided === 0) {
     document.getElementById('champ-names-area').innerHTML =
-      `<span class="champ-chip" style="background:rgba(180,180,180,.15);color:#888;border:1px solid #ddd;">⏳ 賽果出爐後公布</span>`;
+      `<span class="champ-chip" style="background:rgba(180,180,180,.15);color:#888;border:1px solid #ddd;">${t('waitingResults')}</span>`;
     document.getElementById('champ-runners-area').innerHTML = '';
     return;
   }
@@ -478,7 +705,7 @@ const g7DeadlineDate = new Date('2026-05-03T09:00:00+08:00');
 
 const SECTIONS = [
   {
-    label: '東區首輪', tag: 'EAST', tagClass: 'east',
+    labelKey: 'sectionEast', tag: 'EAST', tagClass: 'east',
     matches: [
       { id: 0, time: '5月2日 (週六) · 上午 7:00', note: 'GAME 6',
         seriesText: 'ORL leads 3-2', seriesClass: 'lead',
@@ -491,7 +718,7 @@ const SECTIONS = [
     ]
   },
   {
-    label: '西區首輪', tag: 'WEST', tagClass: 'west',
+    labelKey: 'sectionWest', tag: 'WEST', tagClass: 'west',
     matches: [
       { id: 2, time: '5月2日 (週六) · 上午 9:30', note: 'GAME 6',
         seriesText: 'LAL leads 3-2', seriesClass: 'lead',
@@ -500,7 +727,7 @@ const SECTIONS = [
     ]
   },
   {
-    label: '東區 G7 決戰', tag: 'G7', tagClass: 'g7tag',
+    labelKey: 'sectionG7', tag: 'G7', tagClass: 'g7tag',
     matches: [
       { id: 3, time: '5月3日 (週日) · 上午 8:30', note: 'GAME 7', noteClass: 'g7-note', cardClass: 'g7-card',
         seriesText: 'Tied 3-3', seriesClass: 'tied',
@@ -511,7 +738,6 @@ const SECTIONS = [
 ];
 
 const MATCH_COUNT = 4;
-const MARGIN_LABELS = ['≤10分', '11-20分', '21分+'];
 let votes = new Array(MATCH_COUNT).fill(null), locked = false, g7Locked = false, myName = '';
 let margins = new Array(MATCH_COUNT).fill(null);
 let results = [null, null, null, null], latestDB = [];
@@ -522,11 +748,12 @@ let modifyMode = false, myModified = false, hasSubmitted = false;
 
 function renderMatches() {
   const container = document.getElementById('matches-container');
+  container.innerHTML = '';
   let delay = 0.1;
   SECTIONS.forEach(sec => {
     container.innerHTML += `
       <div class="sec">
-        <span class="sec-label" style="color:${sec.tagClass==='east'?'#C8102E':sec.tagClass==='g7tag'?'#7a0a60':'#1D428A'}">${sec.label}</span>
+        <span class="sec-label" style="color:${sec.tagClass==='east'?'#C8102E':sec.tagClass==='g7tag'?'#7a0a60':'#1D428A'}">${t(sec.labelKey)}</span>
         <div class="sec-line" style="color:${sec.tagClass==='east'?'#C8102E':sec.tagClass==='g7tag'?'#7a0a60':'#1D428A'}"></div>
         <span class="ctag ${sec.tagClass}">${sec.tag}</span>
       </div>`;
@@ -542,33 +769,33 @@ function renderMatches() {
           </div>
           <div class="teams">
             <div class="team">
-              <div class="emoji">${m.teamA.emoji}</div>
-              <div>
-                <div class="seed">${m.teamA.seed} 種子<span class="${m.teamA.home?'home-tag':'away-tag'}">${m.teamA.home?'主場':'客場'}</span></div>
-                <div class="tname">${m.teamA.name}</div>
+                <div class="emoji">${m.teamA.emoji}</div>
+                <div>
+                <div class="seed">${t('seed', m.teamA.seed)}<span class="${m.teamA.home?'home-tag':'away-tag'}">${m.teamA.home?t('home'):t('away')}</span></div>
+                <div class="tname">${teamLabel(m.teamA.name)}</div>
               </div>
             </div>
             <div class="vs" id="vs-${m.id}">VS</div>
             <div class="team r">
-              <div class="emoji">${m.teamB.emoji}</div>
-              <div>
-                <div class="seed">${m.teamB.seed} 種子<span class="${m.teamB.home?'home-tag':'away-tag'}">${m.teamB.home?'主場':'客場'}</span></div>
-                <div class="tname">${m.teamB.name}</div>
+                <div class="emoji">${m.teamB.emoji}</div>
+                <div>
+                <div class="seed">${t('seed', m.teamB.seed)}<span class="${m.teamB.home?'home-tag':'away-tag'}">${m.teamB.home?t('home'):t('away')}</span></div>
+                <div class="tname">${teamLabel(m.teamB.name)}</div>
               </div>
             </div>
           </div>
           <div class="vote-row">
-            <div class="vote-lbl">🏆 你看好誰贏這場？</div>
+            <div class="vote-lbl">${t('voteQuestion')}</div>
             <div class="btns">
-              <button class="vbtn" onclick="pick(${m.id},'${m.teamA.name}','l',this)">${m.teamA.emoji} ${m.teamA.name}<span class="ck">✓</span></button>
-              <button class="vbtn" onclick="pick(${m.id},'${m.teamB.name}','r',this)">${m.teamB.emoji} ${m.teamB.name}<span class="ck">✓</span></button>
+              <button class="vbtn" onclick="pick(${m.id},'${m.teamA.name}','l',this)">${m.teamA.emoji} ${teamLabel(m.teamA.name)}<span class="ck">✓</span></button>
+              <button class="vbtn" onclick="pick(${m.id},'${m.teamB.name}','r',this)">${m.teamB.emoji} ${teamLabel(m.teamB.name)}<span class="ck">✓</span></button>
             </div>
             <div class="margin-row">
-              <div class="margin-lbl">📏 勝分差距（同分決勝）</div>
+              <div class="margin-lbl">${t('marginQuestion')}</div>
               <div class="margin-btns">
-                <button class="mbtn" data-mid="${m.id}" onclick="pickMargin(${m.id},0,this)">≤ 10分</button>
-                <button class="mbtn" data-mid="${m.id}" onclick="pickMargin(${m.id},1,this)">11 - 20分</button>
-                <button class="mbtn" data-mid="${m.id}" onclick="pickMargin(${m.id},2,this)">21分以上</button>
+                <button class="mbtn" data-mid="${m.id}" onclick="pickMargin(${m.id},0,this)">${marginLabel(0)}</button>
+                <button class="mbtn" data-mid="${m.id}" onclick="pickMargin(${m.id},1,this)">${marginLabel(1)}</button>
+                <button class="mbtn" data-mid="${m.id}" onclick="pickMargin(${m.id},2,this)">${marginLabel(2)}</button>
               </div>
             </div>
           </div>
@@ -577,7 +804,101 @@ function renderMatches() {
     });
   });
 }
-renderMatches();
+
+function renderInjuries() {
+  const box = document.querySelector('.injury-box');
+  if (!box) return;
+  box.innerHTML = `<div class="injury-title" id="injury-title">${t('injuryTitle')}</div>` +
+    INJURIES.map(game => `
+      <div class="injury-game">
+        <div class="injury-matchup">${game.matchup[currentLang]}</div>
+        <div class="injury-list">
+          ${game.tags.map(tag => `<span class="i-tag ${tag.cls}">${tag[currentLang]}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+}
+
+function syncPickButtons() {
+  const allMatches = SECTIONS.flatMap(s => s.matches);
+  votes.forEach((v, i) => {
+    if (!v) return;
+    const card = document.querySelector(`.card[data-i="${i}"]`);
+    if (!card) return;
+    const [btnL, btnR] = card.querySelectorAll('.vbtn');
+    const m = allMatches.find(x => x.id === i);
+    if (m && v === m.teamA.name) btnL.classList.add('sel-l');
+    else btnR.classList.add('sel-r');
+  });
+  margins.forEach((val, i) => {
+    if (val === null || val === undefined) return;
+    const card = document.querySelector(`.card[data-i="${i}"]`);
+    if (!card) return;
+    const mbtns = card.querySelectorAll('.mbtn');
+    if (mbtns[val]) mbtns[val].classList.add('sel');
+  });
+}
+
+function setStaticText() {
+  document.documentElement.lang = currentLang === 'zh' ? 'zh-TW' : 'en';
+  document.title = t('title');
+  document.getElementById('lang-toggle').textContent = t('langButton');
+  document.getElementById('champ-title').textContent = t('champTitle');
+  document.getElementById('prev-title').textContent = t('prevTitle');
+  document.getElementById('analysis-title').textContent = t('analysisTitle');
+  document.getElementById('analysis-sub').textContent = t('analysisSub');
+  document.getElementById('espn-title').textContent = t('espnTitle');
+  document.getElementById('espn-sub').textContent = t('espnSub');
+  document.getElementById('main-title').textContent = t('mainTitle');
+  document.getElementById('main-sub').textContent = t('mainSub');
+  document.getElementById('intro-kicker').textContent = t('introKicker');
+  document.getElementById('intro-quote').textContent = t('introQuote');
+  document.getElementById('intro-sour').innerHTML = t('introSour');
+  document.getElementById('name-label').textContent = t('nameLabel');
+  document.getElementById('pname').placeholder = t('namePlaceholder');
+  document.getElementById('g7-extra-desc').textContent = t('g7Existing');
+  document.getElementById('g7-extra-btn').textContent = t('g7Button');
+  document.getElementById('rules-box').innerHTML = t('rules');
+  document.getElementById('submit-hint').textContent = t('submitHint');
+  document.getElementById('poster-text').textContent = t('poster');
+  document.getElementById('lb-title').textContent = t('lbTitle');
+  document.getElementById('lb-head-name').textContent = t('name');
+  [0,1,2,3].forEach(i => document.getElementById(`lb-head-${i}`).textContent = matchName(i));
+  if (!modifyMode) document.getElementById('subbtn').textContent = t('submit');
+  document.getElementById('modify-btn').textContent = t('modify');
+  document.getElementById('modify-used').textContent = t('modifyUsed');
+  if (!locked) {
+    document.getElementById('btitle').textContent = t('openTitle');
+    document.getElementById('bsub').textContent = t('openSub');
+  } else {
+    document.getElementById('btitle').textContent = t('closedTitle');
+    document.getElementById('bsub').textContent = t('closedSub');
+    document.getElementById('countdown').textContent = t('expired');
+  }
+}
+
+function applyLanguage() {
+  const wasLocked = locked;
+  const wasG7Locked = g7Locked;
+  setStaticText();
+  renderInjuries();
+  renderMatches();
+  syncPickButtons();
+  updateCardScores();
+  renderPrevLB();
+  renderLB();
+  restoreMyStatus(myName || document.getElementById('pname').value.trim());
+  if (wasLocked) { locked = false; lockAll(); }
+  if (wasG7Locked) { g7Locked = false; lockG7(); }
+}
+
+document.getElementById('lang-toggle').addEventListener('click', () => {
+  currentLang = currentLang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('nba0502_lang', currentLang);
+  applyLanguage();
+});
+
+applyLanguage();
 
 function updateCardScores() {
   const allMatches = SECTIONS.flatMap(s => s.matches);
@@ -593,7 +914,7 @@ function updateCardScores() {
           <span class="dash">-</span>
           <span class="sc ${aWon?'lose':'win'}">${sb}</span>
         </div>
-        <div class="fin-lbl">最終比分</div>
+        <div class="fin-lbl">${t('finalScore')}</div>
       </div>`;
     }
   });
@@ -613,11 +934,11 @@ setInterval(tick, 1000); tick();
 
 function lockAll(){
   if(locked) return; locked = true;
-  document.getElementById('countdown').textContent = '已截止';
+  document.getElementById('countdown').textContent = t('expired');
   document.getElementById('countdown').classList.add('exp');
   document.getElementById('banner').className = 'banner closed';
-  document.getElementById('btitle').textContent = '⛔ 預測已截止';
-  document.getElementById('bsub').textContent = '下注時間結束，以下為最終預測結果';
+  document.getElementById('btitle').textContent = t('closedTitle');
+  document.getElementById('bsub').textContent = t('closedSub');
   // pname 保持可用，讓新用戶仍能輸入名字補加 G7
   document.getElementById('subbtn').disabled = true;
   document.getElementById('modify-btn').style.display = 'none';
@@ -635,7 +956,7 @@ function lockAll(){
     const isG7 = card && parseInt(card.dataset.i) === 3;
     if(!isG7 || g7Locked){
       const o = document.createElement('div');
-      o.className = 'lock-overlay'; o.textContent = '🔒 已截止'; v.appendChild(o);
+      o.className = 'lock-overlay'; o.textContent = t('locked'); v.appendChild(o);
     }
   });
 }
@@ -650,7 +971,7 @@ function lockG7(){
     g7Card.querySelectorAll('.vote-row').forEach(v => {
       if(!v.querySelector('.lock-overlay')){
         const o = document.createElement('div');
-        o.className = 'lock-overlay'; o.textContent = '🔒 G7 已截止'; v.appendChild(o);
+        o.className = 'lock-overlay'; o.textContent = t('g7Locked'); v.appendChild(o);
       }
     });
   }
@@ -665,7 +986,7 @@ function restoreMyStatus(nameToCheck){
     const g7Desc = document.getElementById('g7-extra-desc');
     if(g7Wrap) {
       if(locked && !g7Locked && !modifyMode) {
-        if(g7Desc) g7Desc.textContent = '🆕 5/2 三場已截止 · 仍可加入 G7 單場預測';
+        if(g7Desc) g7Desc.textContent = t('g7New');
         g7Wrap.style.display = 'block';
       } else {
         g7Wrap.style.display = 'none';
@@ -710,7 +1031,7 @@ function restoreMyStatus(nameToCheck){
   const g7Desc = document.getElementById('g7-extra-desc');
   if(g7Wrap) {
     if(!g7Locked && !hasG7 && !modifyMode) {
-      if(g7Desc) g7Desc.textContent = '✅ 你已提交 5/2 三場預測 · 補加 G7 不消耗修改機會';
+      if(g7Desc) g7Desc.textContent = t('g7Existing');
       g7Wrap.style.display = 'block';
     } else {
       g7Wrap.style.display = 'none';
@@ -741,18 +1062,18 @@ window.pickMargin = function(idx, val, btn){
 };
 
 window.submitPrediction = async function(){
-  if(locked){ toast('⛔ 已截止，無法再修改！'); return; }
+  if(locked){ toast(t('lockedToast')); return; }
   myName = document.getElementById('pname').value.trim();
-  if(!myName){ toast('⚠️ 請輸入你的名字！'); return; }
+  if(!myName){ toast(t('needName')); return; }
   const miss = votes.filter(v=>!v).length;
-  if(miss){ toast(`⚠️ 還有 ${miss} 場未選！`); return; }
+  if(miss){ toast(t('missingGames', miss)); return; }
   const missMgn = margins.filter(v=>v===null).length;
-  if(missMgn){ toast(`⚠️ 還有 ${missMgn} 場未選差距！`); return; }
+  if(missMgn){ toast(t('missingMargins', missMgn)); return; }
   const key = myName.toLowerCase().replace(/\s+/g,'_');
   await setDoc(doc(colRef,key),{name:myName,votes:[...votes],margins:[...margins],time:Date.now(),modified:false});
   hasSubmitted = true;
   localStorage.setItem('nba0502_name', myName);
-  toast('✅ 預測已送出！');
+  toast(t('submitted'));
   document.getElementById('poster-link').style.display='block';
   document.getElementById('subbtn').disabled = true;
   document.getElementById('g7-extra-wrap').style.display='none';
@@ -774,14 +1095,14 @@ function showModifyUI(){
 }
 
 window.enterModifyMode = async function(){
-  if(locked){ toast('⛔ 已截止，無法修改！'); return; }
-  if(myModified){ toast('✅ 修改機會已使用過了'); return; }
+  if(locked){ toast(t('lockedModifyToast')); return; }
+  if(myModified){ toast(t('modifiedUsedToast')); return; }
   const inputName = document.getElementById('pname').value.trim();
-  if(!inputName){ toast('⚠️ 請先在上方填入你的名字！'); return; }
+  if(!inputName){ toast(t('needNameTop')); return; }
   const checkName = myName || inputName;
   const me = latestDB.find(e => e.name.toLowerCase() === checkName.toLowerCase());
-  if(!me){ toast('⚠️ 查無此名字的預測，請確認名字是否正確'); return; }
-  if(me.modified){ toast('✅ 修改機會已使用過了'); myModified=true; showModifyUI(); return; }
+  if(!me){ toast(t('noRecord')); return; }
+  if(me.modified){ toast(t('modifiedUsedToast')); myModified=true; showModifyUI(); return; }
   myName = checkName;
   hasSubmitted = true;
   myModified = false;
@@ -789,24 +1110,24 @@ window.enterModifyMode = async function(){
   restoreMyStatus(myName);
   document.querySelectorAll('.vbtn').forEach(b => b.disabled = false);
   document.querySelectorAll('.mbtn').forEach(b => b.disabled = false);
-  document.getElementById('subbtn').textContent = '✏️ 確認修改';
+  document.getElementById('subbtn').textContent = t('confirmModify');
   document.getElementById('subbtn').disabled = false;
   document.getElementById('subbtn').onclick = confirmModify;
   document.getElementById('modify-btn').disabled = true;
-  toast('🔓 已解鎖！修改選擇後點「確認修改」，僅限一次');
+  toast(t('modifyMode'));
 };
 
 window.confirmModify = async function(){
-  if(locked){ toast('⛔ 已截止！'); return; }
+  if(locked){ toast(t('lockedShortToast')); return; }
   const miss = votes.filter(v=>!v).length;
-  if(miss){ toast(`⚠️ 還有 ${miss} 場未選！`); return; }
+  if(miss){ toast(t('missingGames', miss)); return; }
   const missMgn = margins.filter(v=>v===null).length;
-  if(missMgn){ toast(`⚠️ 還有 ${missMgn} 場未選差距！`); return; }
+  if(missMgn){ toast(t('missingMargins', missMgn)); return; }
   const key = myName.toLowerCase().replace(/\s+/g,'_');
   await setDoc(doc(colRef,key),{name:myName,votes:[...votes],margins:[...margins],time:Date.now(),modified:true});
   myModified = true; modifyMode = false;
-  toast('✅ 修改已確認！修改機會已用完');
-  document.getElementById('subbtn').textContent = '🏀 提交預測';
+  toast(t('modifyDone'));
+  document.getElementById('subbtn').textContent = t('submit');
   document.getElementById('subbtn').disabled = true;
   document.getElementById('subbtn').onclick = submitPrediction;
   document.querySelectorAll('.vbtn').forEach(b => b.disabled = true);
@@ -815,11 +1136,11 @@ window.confirmModify = async function(){
 
 // ── 補加 G7 預測（已提交3場者使用，不消耗修改機會） ──
 window.submitG7Extra = async function(){
-  if(g7Locked){ toast('⛔ G7 已截止！'); return; }
+  if(g7Locked){ toast(t('g7LockedToast')); return; }
   myName = document.getElementById('pname').value.trim();
-  if(!myName){ toast('⚠️ 請先填入名字！'); return; }
-  if(!votes[3]){ toast('⚠️ 請先選擇 G7 勝隊！'); return; }
-  if(margins[3]===null){ toast('⚠️ 請先選擇 G7 差距！'); return; }
+  if(!myName){ toast(t('needNameShort')); return; }
+  if(!votes[3]){ toast(t('needG7Winner')); return; }
+  if(margins[3]===null){ toast(t('needG7Margin')); return; }
   const me = latestDB.find(e => e.name.toLowerCase()===myName.toLowerCase());
   const key = myName.toLowerCase().replace(/\s+/g,'_');
   if(me) {
@@ -830,7 +1151,7 @@ window.submitG7Extra = async function(){
       name: me.name, votes: newVotes, margins: newMargins,
       time: me.time, modified: me.modified
     });
-    toast('✅ G7 預測已補加！');
+    toast(t('g7Added'));
   } else {
     // 新用戶，只預測 G7
     await setDoc(doc(colRef,key),{
@@ -840,14 +1161,14 @@ window.submitG7Extra = async function(){
       time: Date.now(),
       modified: false
     });
-    toast('✅ G7 預測已送出！');
+    toast(t('g7Submitted'));
   }
   document.getElementById('g7-extra-wrap').style.display='none';
 };
 
 window.deleteMe = async function(){
   if(locked||!myName) return;
-  if(!confirm(`確定要刪除「${myName}」的預測嗎？`)) return;
+  if(!confirm(t('deleteConfirm', myName))) return;
   const key = myName.toLowerCase().replace(/\s+/g,'_');
   await deleteDoc(doc(colRef,key));
   votes = new Array(MATCH_COUNT).fill(null);
@@ -859,7 +1180,7 @@ window.deleteMe = async function(){
   document.getElementById('modify-used').style.display = 'none';
   document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('sel-l','sel-r'));
   document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('sel'));
-  toast('🗑 預測已刪除');
+  toast(t('deleted'));
 };
 
 const SYM=['🥇','🥈','🥉'],CLS=['g','s','b'];
@@ -885,27 +1206,27 @@ function generateComment(votes, margins) {
   const bigAny    = m.some(x => x === 2);
 
   const coldQuips = {
-    '魔術': 'Banchero 主場要單扛 Cade——這是信仰，不是分析',
-    '暴龍': '多倫多絕地反攻，騎士欠你一個奇蹟',
-    '火箭': 'Durant 缺陣你都押火箭——要麼天才，要麼輸得心服口服',
-    '76人': 'Embiid 從 1-3 打進 G7 你還敢押費城——這不是賭，這是追隨傳奇',
+    '魔術': currentLang === 'zh' ? 'Banchero 主場要單扛 Cade——這是信仰，不是分析' : 'Backing Banchero at home against Cade is faith, not analysis',
+    '暴龍': currentLang === 'zh' ? '多倫多絕地反攻，騎士欠你一個奇蹟' : 'Toronto survival pick. You are asking Cleveland to owe you a miracle',
+    '火箭': currentLang === 'zh' ? 'Durant 缺陣你都押火箭——要麼天才，要麼輸得心服口服' : 'Picking Houston even with Durant doubtful is either genius or a clean lesson',
+    '76人': currentLang === 'zh' ? 'Embiid 從 1-3 打進 G7 你還敢押費城——這不是賭，這是追隨傳奇' : 'Still riding Philly after Embiid dragged them to G7. That is not a bet. That is belief',
   };
 
   if (hot === total) {
-    if (tightAll) return '四場全跟熱門走，差距還全押小分——穩，但季後賽最怕的就是太穩';
-    if (bigAny)   return '全押領先隊還有場押大比分，自信滿滿——出來混，遲早要還的';
-    return '四場全押領先隊，最安全的選擇——但冠軍不住在安全地帶';
+    if (tightAll) return currentLang === 'zh' ? '四場全跟熱門走，差距還全押小分——穩，但季後賽最怕的就是太穩' : 'All favorites and all tight margins. Safe, but the playoffs rarely reward comfort';
+    if (bigAny)   return currentLang === 'zh' ? '全押領先隊還有場押大比分，自信滿滿——出來混，遲早要還的' : 'All favorites with at least one big margin. Confident, maybe too confident';
+    return currentLang === 'zh' ? '四場全押領先隊，最安全的選擇——但冠軍不住在安全地帶' : 'All four favorites. Safest board possible, but champions do not live in safe zones';
   }
   if (hot === 0) {
     const q = coldPicks.map(t => coldQuips[t] || t).join('；');
-    return `四場全押落後隊——${q}——不是先知就是今晚最貴的教訓`;
+    return currentLang === 'zh' ? `四場全押落後隊——${q}——不是先知就是今晚最貴的教訓` : `All four underdogs: ${q}. Prophet or tuition bill, no middle ground`;
   }
   if (coldPicks.length === 1) {
     const ct = coldPicks[0];
-    return coldQuips[ct] || `三穩一賭押 ${ct}——若爆冷今日 MVP 就是你`;
+    return coldQuips[ct] || (currentLang === 'zh' ? `三穩一賭押 ${ct}——若爆冷今日 MVP 就是你` : `Three safe picks and one swing on ${teamLabel(ct)}. If it hits, you own the day`);
   }
   const q = coldPicks.map(t => coldQuips[t] || t).join('＋');
-  return `押了 ${coldPicks.length} 場冷門：${q}——今天賭桌上你才是主角`;
+  return currentLang === 'zh' ? `押了 ${coldPicks.length} 場冷門：${q}——今天賭桌上你才是主角` : `${coldPicks.length} underdog picks: ${q}. You are the main character at the table today`;
 }
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -913,15 +1234,15 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 function renderLB(){
   const decided = results.filter(r=>r!==null).length;
   const resultTags = results.map((r,i)=>
-    r ? `<span class="result-tag win">✓ ${r} 勝</span>`
-      : `<span class="result-tag pending">⏳ ${MATCH_NAMES[i]}</span>`
+    r ? `<span class="result-tag win">${t('winnerTag', r)}</span>`
+      : `<span class="result-tag pending">${t('pendingTag', i)}</span>`
   ).join('');
   document.getElementById('result-row').innerHTML = resultTags;
 
   const db = latestDB;
-  document.getElementById('lb-cnt').textContent = `${db.length} 人參與`;
+  document.getElementById('lb-cnt').textContent = t('participants', db.length);
   if(!db.length){
-    document.getElementById('lb-body').innerHTML='<div class="lb-empty">🏀 還沒有人投票，快來第一個！</div>';
+    document.getElementById('lb-body').innerHTML=`<div class="lb-empty">${t('noVotes')}</div>`;
     return;
   }
 
@@ -956,38 +1277,38 @@ function renderLB(){
     const cells = (e.votes||[]).map((v,idx)=>{
       if(!v) return `<div class="lb-pick">—</div>`;
       const mVal = (e.margins && e.margins[idx]!=null) ? e.margins[idx] : null;
-      const mLabel = mVal!==null ? MARGIN_LABELS[mVal] : null;
+      const mLabel = mVal!==null ? marginLabel(mVal) : null;
       if(results[idx]===null){
         const mTag = mLabel
           ? `<span class="margin-tag">${mLabel}</span>`
-          : `<span class="margin-tag m-wrong">未填</span>`;
-        return `<div class="lb-pick on">${v}${mTag}</div>`;
+          : `<span class="margin-tag m-wrong">${t('notFilled')}</span>`;
+        return `<div class="lb-pick on">${teamLabel(v)}${mTag}</div>`;
       }
       const ok = v===results[idx];
       const mDecided = marginResults[idx]!==null;
       const mOk = mDecided && mVal===marginResults[idx];
       const mTag = mLabel
         ? `<span class="margin-tag${mDecided?(mOk?' m-ok':' m-wrong'):''}">${mLabel}</span>`
-        : `<span class="margin-tag m-wrong">未填</span>`;
-      return `<div class="lb-pick ${ok?'correct':'wrong'}">${ok?'✓':'✗'} ${v}${mTag}</div>`;
+        : `<span class="margin-tag m-wrong">${t('notFilled')}</span>`;
+      return `<div class="lb-pick ${ok?'correct':'wrong'}">${ok?'✓':'✗'} ${teamLabel(v)}${mTag}</div>`;
     }).join('');
     const sub=(e.votes||[]).map((v,i)=>{
       const mVal=(e.margins&&e.margins[i]!=null)?e.margins[i]:null;
-      return v?`${v}${mVal!==null?`(${MARGIN_LABELS[mVal]})`:'(未填)'}` :'—';
+      return v?`${teamLabel(v)}${mVal!==null?`(${marginLabel(mVal)})`:`(${t('notFilled')})`}` :'—';
     }).join(' · ');
     const scoreClass=`s${e.correct}`;
     const votedCount=(e.votes||[]).filter(v=>v!==null&&v!==undefined).length;
     const scoreDenom=votedCount>0?votedCount:MATCH_COUNT;
-    const scoreBadge=decided>0?`<span class="score-badge ${scoreClass}">${e.correct}/${scoreDenom} 正確</span>`:'';
-    const mBadge=(decided>0&&e.marginCorrect>0)?`<span class="margin-badge">🎯 差距${e.marginCorrect}準</span>`:'';
-    const crownHtml=allCorrect?`<span class="crown">👑</span><span class="hao">厲害！</span>`:'';
-    const delBtn=(!locked&&isMe)?`<button class="del-btn" onclick="deleteMe()">🗑 刪除</button>`:`<div></div>`;
+    const scoreBadge=decided>0?`<span class="score-badge ${scoreClass}">${e.correct}/${scoreDenom} ${t('correct')}</span>`:'';
+    const mBadge=(decided>0&&e.marginCorrect>0)?`<span class="margin-badge">${t('marginHit', e.marginCorrect)}</span>`:'';
+    const crownHtml=allCorrect?`<span class="crown">👑</span><span class="hao">${t('great')}</span>`:'';
+    const delBtn=(!locked&&isMe)?`<button class="del-btn" onclick="deleteMe()">${t('delete')}</button>`:`<div></div>`;
     const rowStyle=allCorrect?'style="background:rgba(255,215,0,.08);border-left:3px solid #FFD700"':'';
     return `
       <div class="lb-row ${isMe?'me':''}" ${rowStyle}>
         <div class="lb-rank ${rankCls}">${rankMedal}</div>
         <div class="lb-name">
-          <div class="crown-row">${esc(e.name)}${isMe?'<span class="me-tag">← 你</span>':''}${PREV_CHAMPS.some(n=>n.toLowerCase()===e.name.toLowerCase())?'<span class="prev-champ">👑 昨日冠軍</span>':PREV_RUNNERS.some(n=>n.toLowerCase()===e.name.toLowerCase())?'<span class="prev-runner">🥈 昨日亞軍</span>':PREV_BRONZE.some(n=>n.toLowerCase()===e.name.toLowerCase())?'<span class="prev-bronze">🥉 昨日銅牌</span>':''}${crownHtml}${scoreBadge}${mBadge}</div>
+          <div class="crown-row">${esc(e.name)}${isMe?`<span class="me-tag">${t('me')}</span>`:''}${PREV_CHAMPS.some(n=>n.toLowerCase()===e.name.toLowerCase())?`<span class="prev-champ">${t('prevChamp')}</span>`:PREV_RUNNERS.some(n=>n.toLowerCase()===e.name.toLowerCase())?`<span class="prev-runner">${t('prevRunner')}</span>`:PREV_BRONZE.some(n=>n.toLowerCase()===e.name.toLowerCase())?`<span class="prev-bronze">${t('prevBronze')}</span>`:''}${crownHtml}${scoreBadge}${mBadge}</div>
           <div class="lb-sub">${sub}</div>
         </div>
         ${cells}
