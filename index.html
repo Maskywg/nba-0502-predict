@@ -355,6 +355,14 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
   </a>
 </div>
 
+<a class="codex-link" href="https://maskywg.github.io/nba-0504-predict/" target="_blank" style="margin-top:22px;background:linear-gradient(135deg,#f7fff8,#e4f7ec);border-color:#b6dfc7;">
+  <div class="codex-icon">🌿</div>
+  <div class="codex-text">
+    <div class="codex-title" id="next-title" style="color:#1E7A5F;">前往 5/4 東區 G7 預測</div>
+    <div class="codex-sub" id="next-sub" style="color:#4a8d72;">魔術 vs 活塞 · 暴龍 vs 騎士 · 兩場生死戰 →</div>
+  </div>
+</a>
+
 <div id="lb-section">
   <div class="lb-top">
     <div class="lb-title" id="lb-title">🏆 同學預測榜</div>
@@ -441,6 +449,8 @@ const I18N = {
     confirmModify: '✏️ 確認修改',
     modifyUsed: '✅ 修改機會已使用',
     poster: '🎁 領取 5/1 對戰組合海報',
+    nextTitle: '前往 5/4 東區 G7 預測',
+    nextSub: '魔術 vs 活塞 · 暴龍 vs 騎士 · 兩場生死戰 →',
     lbTitle: '🏆 同學預測榜',
     name: '名字',
     connecting: '🏀 連線中...',
@@ -525,6 +535,8 @@ const I18N = {
     confirmModify: '✏️ Confirm Edit',
     modifyUsed: '✅ Edit already used',
     poster: '🎁 Claim 5/1 matchup posters',
+    nextTitle: 'Go to 5/4 East Game 7 Predictions',
+    nextSub: 'Magic vs Pistons · Raptors vs Cavaliers · two elimination games →',
     lbTitle: '🏆 Class Leaderboard',
     name: 'Name',
     connecting: '🏀 Connecting...',
@@ -861,6 +873,8 @@ function setStaticText() {
   document.getElementById('rules-box').innerHTML = t('rules');
   document.getElementById('submit-hint').textContent = t('submitHint');
   document.getElementById('poster-text').textContent = t('poster');
+  document.getElementById('next-title').textContent = t('nextTitle');
+  document.getElementById('next-sub').textContent = t('nextSub');
   document.getElementById('lb-title').textContent = t('lbTitle');
   document.getElementById('lb-head-name').textContent = t('name');
   [0,1,2,3].forEach(i => document.getElementById(`lb-head-${i}`).textContent = matchName(i));
