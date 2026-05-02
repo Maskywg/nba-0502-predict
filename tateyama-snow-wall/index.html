@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 立山黑部雪牆高度預測</title>
+<meta name="description" content="2026 立山黑部雪牆高度預測，整理開山高度、5月初高度、5月底預估與旅遊注意事項。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef5f9;
+  --panel:#ffffff;
+  --ink:#183246;
+  --muted:#5d7283;
+  --blue:#2563eb;
+  --blue-dark:#174ea6;
+  --ice:#dff4ff;
+  --orange:#f97316;
+  --amber:#fff7ed;
+  --line:#d8e5ee;
+  --shadow:0 18px 45px rgba(35,73,102,.13);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Noto Sans TC",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0) 280px),
+    radial-gradient(circle at 12% 8%,rgba(110,190,255,.22),transparent 36%),
+    linear-gradient(135deg,#eef5f9 0%,#f7fbff 54%,#e9f2f7 100%);
+}
+.page{
+  width:min(1080px,100%);
+  margin:0 auto;
+  padding:28px 18px 56px;
+}
+.hero{
+  min-height:300px;
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);
+  gap:28px;
+  align-items:stretch;
+  margin-bottom:18px;
+}
+.hero-copy{
+  padding:34px 0 26px;
+}
+.kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--blue-dark);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:15px;
+}
+.kicker::before{
+  content:"";
+  width:32px;
+  height:3px;
+  border-radius:10px;
+  background:var(--blue);
+}
+h1{
+  margin:0;
+  font-size:clamp(35px,6vw,68px);
+  line-height:1.05;
+  letter-spacing:0;
+  color:#102b3d;
+}
+.lead{
+  margin:16px 0 0;
+  max-width:620px;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.75;
+}
+.hero-visual{
+  min-height:300px;
+  border-radius:8px;
+  overflow:hidden;
+  position:relative;
+  background:
+    linear-gradient(180deg,rgba(12,60,112,.05),rgba(8,42,70,.2)),
+    linear-gradient(145deg,#f9fdff 0%,#bde8ff 48%,#ebf8ff 100%);
+  box-shadow:var(--shadow);
+}
+.hero-visual::before{
+  content:"";
+  position:absolute;
+  inset:auto -12% 0 -12%;
+  height:70%;
+  background:
+    linear-gradient(82deg,rgba(255,255,255,.95) 0 22%,transparent 22% 24%,rgba(255,255,255,.92) 24% 44%,transparent 44% 46%,rgba(255,255,255,.9) 46% 68%,transparent 68% 70%,rgba(255,255,255,.95) 70%),
+    linear-gradient(180deg,#ffffff,#d7edf8);
+  clip-path:polygon(0 38%,9% 27%,18% 34%,28% 18%,39% 30%,50% 12%,62% 29%,75% 18%,87% 35%,100% 24%,100% 100%,0 100%);
+}
+.road{
+  position:absolute;
+  left:46%;
+  bottom:-8%;
+  width:24%;
+  height:58%;
+  transform:skewX(-11deg);
+  background:linear-gradient(90deg,#6e8290,#b5c4ca 46%,#7f939e);
+  clip-path:polygon(35% 0,65% 0,100% 100%,0 100%);
+  opacity:.72;
+}
+.snow-label{
+  position:absolute;
+  right:20px;
+  top:22px;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(37,99,235,.18);
+  border-radius:8px;
+  padding:12px 14px;
+  box-shadow:0 8px 20px rgba(44,80,105,.12);
+}
+.snow-label strong{
+  display:block;
+  color:var(--blue-dark);
+  font-size:28px;
+  line-height:1;
+}
+.snow-label span{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:18px;
+}
+.stat,.panel,.note{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(126,158,181,.2);
+  border-radius:8px;
+  box-shadow:0 10px 28px rgba(35,73,102,.08);
+}
+.stat{
+  padding:20px;
+  min-height:126px;
+  position:relative;
+}
+.stat.current{border:2px solid rgba(37,99,235,.7)}
+.tag{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:var(--blue);
+  color:white;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.8px;
+  border-radius:999px;
+  padding:4px 8px;
+}
+.stat h2{
+  margin:0 0 10px;
+  color:var(--muted);
+  font-size:14px;
+  font-weight:700;
+}
+.value{
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  color:var(--blue);
+  font-size:38px;
+  font-weight:900;
+  line-height:1;
+}
+.stat:nth-child(3) .value{color:var(--orange)}
+.unit{
+  color:#7c8b96;
+  font-size:16px;
+  font-weight:500;
+  padding-bottom:4px;
+}
+.panel{
+  padding:22px;
+  margin-bottom:18px;
+}
+.panel-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+.panel-title h2{
+  margin:0;
+  font-size:22px;
+}
+.legend{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+.legend span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.dot,.dash{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  background:var(--blue);
+}
+.dash{
+  width:22px;
+  height:0;
+  border-top:2px dashed var(--blue);
+  border-radius:0;
+  background:transparent;
+}
+.chart-wrap{
+  width:100%;
+  aspect-ratio:2.45/1;
+  min-height:310px;
+}
+svg{display:block;width:100%;height:100%}
+.grid-line{stroke:var(--line);stroke-width:1}
+.axis-text{fill:#6a7d8c;font-size:12px;font-weight:700}
+.area{fill:url(#heightFill)}
+.trend{fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.today-line{stroke:var(--blue);stroke-width:2;stroke-dasharray:6 7}
+.point{fill:#fff;stroke:var(--blue);stroke-width:3}
+.event-label{
+  fill:#183246;
+  font-size:12px;
+  font-weight:900;
+}
+.event-chip{
+  fill:#fff;
+  stroke:#d7e5ef;
+  stroke-width:1;
+}
+.notes{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.note{
+  padding:22px;
+}
+.note h3{
+  margin:0 0 12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:18px;
+}
+.note.warning{
+  background:linear-gradient(180deg,#fff7ed,#fff);
+  border-color:#fed7aa;
+}
+.note.tip{
+  background:linear-gradient(180deg,#eff6ff,#fff);
+  border-color:#bfdbfe;
+}
+.note.warning h3{color:#9a3412}
+.note.tip h3{color:#1d4ed8}
+.note ul{
+  margin:0;
+  padding-left:20px;
+  color:#465f71;
+  line-height:1.85;
+  font-size:14px;
+}
+.source{
+  margin-top:16px;
+  color:#708494;
+  font-size:12px;
+  line-height:1.7;
+}
+@media(max-width:760px){
+  .page{padding:18px 14px 42px}
+  .hero{grid-template-columns:1fr;gap:16px}
+  .hero-copy{padding:16px 0 4px}
+  .hero-visual{min-height:220px}
+  .stats,.notes{grid-template-columns:1fr}
+  .panel{padding:16px 12px}
+  .panel-title{align-items:flex-start;flex-direction:column}
+  .chart-wrap{aspect-ratio:auto;min-height:360px}
+  .stat{min-height:112px}
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="hero" aria-labelledby="page-title">
+    <div class="hero-copy">
+      <div class="kicker">Tateyama Kurobe Snow Wall</div>
+      <h1 id="page-title">2026 立山黑部雪牆高度預測</h1>
+      <p class="lead">基於 2026 年開山高度 12 公尺與 4 月下旬到 6 月的季節性消融趨勢，估算 5 月底雪牆約落在 8.5 公尺左右。</p>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="snow-label"><strong>10.8m</strong><span>5/2 今日預估</span></div>
+      <div class="road"></div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="重點數據">
+    <article class="stat">
+      <h2>開山初始高度 4/15</h2>
+      <div class="value">12.0 <span class="unit">公尺</span></div>
+    </article>
+    <article class="stat current">
+      <span class="tag">NOW</span>
+      <h2>今日預估高度 5/2</h2>
+      <div class="value">10.8 <span class="unit">公尺</span></div>
+    </article>
+    <article class="stat">
+      <h2>5月底預計高度</h2>
+      <div class="value">8.5 <span class="unit">公尺</span></div>
+    </article>
+  </section>
+
+  <section class="panel" aria-labelledby="chart-title">
+    <div class="panel-title">
+      <h2 id="chart-title">雪牆消融趨勢圖</h2>
+      <div class="legend" aria-hidden="true">
+        <span><i class="dot"></i>預測高度</span>
+        <span><i class="dash"></i>當前時間軸</span>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg id="snowChart" role="img" aria-label="2026年4月15日至6月25日立山黑部雪牆高度預測趨勢圖"></svg>
+    </div>
+    <p class="source">註：這是依照你提供的 2026 開山高度與常見融雪節奏製作的視覺化預測，實際高度會受降雪、日照、氣溫與除雪狀況影響。</p>
+  </section>
+
+  <section class="notes" aria-label="旅遊提醒">
+    <article class="note warning">
+      <h3>5 月天氣警告</h3>
+      <ul>
+        <li>5 月起紫外線增強，白雪反射率高，務必準備墨鏡與防曬。</li>
+        <li>雖然雪牆變矮，室堂平氣溫仍可能在 0°C 至 10°C 之間。</li>
+        <li>5 月中下旬開始，雪面可能因灰塵變得較灰，不如 4 月潔白。</li>
+      </ul>
+    </article>
+    <article class="note tip">
+      <h3>觀賞小技巧</h3>
+      <ul>
+        <li>5 月底雪牆雖然較矮，但氣候相對穩定，藍天機率較高。</li>
+        <li>此時御廚池開始解凍，有機會看到漂亮的藍色冰湖。</li>
+        <li>建議採洋蔥式穿法，最外層選擇防風防水外套。</li>
+      </ul>
+    </article>
+  </section>
+</main>
+
+<script>
+const data = [
+  { date: "04-15", height: 12.0, event: "開山日" },
+  { date: "04-22", height: 11.5 },
+  { date: "04-29", height: 11.0 },
+  { date: "05-02", height: 10.8, event: "今天 5/2", today: true },
+  { date: "05-06", height: 10.5 },
+  { date: "05-13", height: 10.0 },
+  { date: "05-20", height: 9.4 },
+  { date: "05-27", height: 8.8 },
+  { date: "05-31", height: 8.5, event: "5月底預測" },
+  { date: "06-10", height: 7.8 },
+  { date: "06-25", height: 7.0, event: "活動結束" }
+];
+
+function createSvg(tag, attrs = {}) {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
+  return el;
+}
+
+function drawChart() {
+  const svg = document.getElementById("snowChart");
+  svg.replaceChildren();
+
+  const width = 980;
+  const height = 390;
+  const margin = { top: 36, right: 26, bottom: 48, left: 58 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const yMax = 14;
+  const yMin = 0;
+  const xStep = innerWidth / (data.length - 1);
+  const x = index => margin.left + index * xStep;
+  const y = value => margin.top + (yMax - value) / (yMax - yMin) * innerHeight;
+
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("preserveAspectRatio", "none");
+
+  const defs = createSvg("defs");
+  const gradient = createSvg("linearGradient", { id: "heightFill", x1: "0", y1: "0", x2: "0", y2: "1" });
+  gradient.append(
+    createSvg("stop", { offset: "5%", "stop-color": "#3b82f6", "stop-opacity": ".25" }),
+    createSvg("stop", { offset: "95%", "stop-color": "#3b82f6", "stop-opacity": "0" })
+  );
+  defs.append(gradient);
+  svg.append(defs);
+
+  for (let value = 0; value <= yMax; value += 2) {
+    const lineY = y(value);
+    svg.append(createSvg("line", { class: "grid-line", x1: margin.left, y1: lineY, x2: width - margin.right, y2: lineY }));
+    const label = createSvg("text", { class: "axis-text", x: margin.left - 12, y: lineY + 4, "text-anchor": "end" });
+    label.textContent = value;
+    svg.append(label);
+  }
+
+  data.forEach((point, index) => {
+    const tick = createSvg("text", { class: "axis-text", x: x(index), y: height - 18, "text-anchor": "middle" });
+    tick.textContent = point.date;
+    svg.append(tick);
+  });
+
+  const yLabel = createSvg("text", { class: "axis-text", x: 18, y: height / 2, transform: `rotate(-90 18 ${height / 2})`, "text-anchor": "middle" });
+  yLabel.textContent = "高度 公尺";
+  svg.append(yLabel);
+
+  const pathPoints = data.map((point, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(point.height)}`).join(" ");
+  const areaPath = `${pathPoints} L ${x(data.length - 1)} ${y(0)} L ${x(0)} ${y(0)} Z`;
+  svg.append(createSvg("path", { class: "area", d: areaPath }));
+  svg.append(createSvg("path", { class: "trend", d: pathPoints }));
+
+  const todayIndex = data.findIndex(point => point.today);
+  const todayX = x(todayIndex);
+  svg.append(createSvg("line", { class: "today-line", x1: todayX, y1: margin.top, x2: todayX, y2: height - margin.bottom }));
+  const todayText = createSvg("text", { class: "event-label", x: todayX + 8, y: margin.top - 12 });
+  todayText.textContent = "今日";
+  svg.append(todayText);
+
+  data.forEach((point, index) => {
+    const pointX = x(index);
+    const pointY = y(point.height);
+    svg.append(createSvg("circle", { class: "point", cx: pointX, cy: pointY, r: point.today ? 6 : 4 }));
+    if (point.event) {
+      const labelY = Math.max(18, pointY - 18);
+      const textWidth = point.event.length * 11 + 18;
+      const chipX = Math.min(Math.max(pointX - textWidth / 2, margin.left), width - margin.right - textWidth);
+      svg.append(createSvg("rect", { class: "event-chip", x: chipX, y: labelY - 18, width: textWidth, height: 24, rx: 6 }));
+      const eventText = createSvg("text", { class: "event-label", x: chipX + textWidth / 2, y: labelY - 2, "text-anchor": "middle" });
+      eventText.textContent = point.event;
+      svg.append(eventText);
+    }
+  });
+}
+
+drawChart();
+window.addEventListener("resize", drawChart);
+</script>
+</body>
+</html>
