@@ -976,7 +976,9 @@ function renderLB(){
       return v?`${v}${mVal!==null?`(${MARGIN_LABELS[mVal]})`:'(未填)'}` :'—';
     }).join(' · ');
     const scoreClass=`s${e.correct}`;
-    const scoreBadge=decided>0?`<span class="score-badge ${scoreClass}">${e.correct}/${decided} 正確</span>`:'';
+    const votedCount=(e.votes||[]).filter(v=>v!==null&&v!==undefined).length;
+    const scoreDenom=votedCount>0?votedCount:MATCH_COUNT;
+    const scoreBadge=decided>0?`<span class="score-badge ${scoreClass}">${e.correct}/${scoreDenom} 正確</span>`:'';
     const mBadge=(decided>0&&e.marginCorrect>0)?`<span class="margin-badge">🎯 差距${e.marginCorrect}準</span>`:'';
     const crownHtml=allCorrect?`<span class="crown">👑</span><span class="hao">厲害！</span>`:'';
     const delBtn=(!locked&&isMe)?`<button class="del-btn" onclick="deleteMe()">🗑 刪除</button>`:`<div></div>`;
