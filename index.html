@@ -323,7 +323,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,9vw,76px);line-heigh
 
 <!-- 補加 G7 預測按鈕（已提交3場、尚未預測G7者才顯示） -->
 <div id="g7-extra-wrap" style="display:none;margin-top:6px;margin-bottom:6px;text-align:center;animation:slideUp .4s ease both">
-  <div style="font-size:12px;color:var(--muted);margin-bottom:10px">✅ 你已提交 5/2 三場預測 · 補加 G7 不消耗修改機會</div>
+  <div id="g7-extra-desc" style="font-size:12px;color:var(--muted);margin-bottom:10px">✅ 你已提交 5/2 三場預測 · 補加 G7 不消耗修改機會</div>
   <button onclick="submitG7Extra()" style="background:linear-gradient(135deg,#7a0a60,#b01090);color:#fff;border:none;padding:15px 44px;border-radius:100px;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(120,0,100,.3)">📌 補加 G7 預測</button>
 </div>
 
@@ -618,7 +618,7 @@ function lockAll(){
   document.getElementById('banner').className = 'banner closed';
   document.getElementById('btitle').textContent = '⛔ 預測已截止';
   document.getElementById('bsub').textContent = '下注時間結束，以下為最終預測結果';
-  document.getElementById('pname').disabled = true;
+  // pname 保持可用，讓新用戶仍能輸入名字補加 G7
   document.getElementById('subbtn').disabled = true;
   document.getElementById('modify-btn').style.display = 'none';
   // G7 卡片（index 3）若尚未截止，保留可選狀態
@@ -659,7 +659,21 @@ function lockG7(){
 function restoreMyStatus(nameToCheck){
   if(!nameToCheck || !latestDB.length) return;
   const me = latestDB.find(e => e.name.toLowerCase() === nameToCheck.toLowerCase());
-  if(!me || modifyMode) return;
+  // 新用戶：主截止後、G7 未截止 → 直接開放 G7 補加
+  if(!me) {
+    const g7Wrap = document.getElementById('g7-extra-wrap');
+    const g7Desc = document.getElementById('g7-extra-desc');
+    if(g7Wrap) {
+      if(locked && !g7Locked && !modifyMode) {
+        if(g7Desc) g7Desc.textContent = '🆕 5/2 三場已截止 · 仍可加入 G7 單場預測';
+        g7Wrap.style.display = 'block';
+      } else {
+        g7Wrap.style.display = 'none';
+      }
+    }
+    return;
+  }
+  if(modifyMode) return;
   myName = nameToCheck;
   hasSubmitted = true;
   myModified = me.modified === true;
@@ -693,7 +707,15 @@ function restoreMyStatus(nameToCheck){
   // 已提交但 G7 尚未預測 → 顯示補加按鈕
   const hasG7 = me.votes && me.votes[3];
   const g7Wrap = document.getElementById('g7-extra-wrap');
-  if(g7Wrap) g7Wrap.style.display = (!g7Locked && !hasG7 && !modifyMode) ? 'block' : 'none';
+  const g7Desc = document.getElementById('g7-extra-desc');
+  if(g7Wrap) {
+    if(!g7Locked && !hasG7 && !modifyMode) {
+      if(g7Desc) g7Desc.textContent = '✅ 你已提交 5/2 三場預測 · 補加 G7 不消耗修改機會';
+      g7Wrap.style.display = 'block';
+    } else {
+      g7Wrap.style.display = 'none';
+    }
+  }
 }
 
 document.getElementById('pname').addEventListener('input', function(){
@@ -794,23 +816,33 @@ window.confirmModify = async function(){
 // ── 補加 G7 預測（已提交3場者使用，不消耗修改機會） ──
 window.submitG7Extra = async function(){
   if(g7Locked){ toast('⛔ G7 已截止！'); return; }
+  myName = document.getElementById('pname').value.trim();
   if(!myName){ toast('⚠️ 請先填入名字！'); return; }
   if(!votes[3]){ toast('⚠️ 請先選擇 G7 勝隊！'); return; }
   if(margins[3]===null){ toast('⚠️ 請先選擇 G7 差距！'); return; }
   const me = latestDB.find(e => e.name.toLowerCase()===myName.toLowerCase());
-  if(!me){ toast('⚠️ 找不到預測記錄，請確認名字'); return; }
-  const newVotes   = [...(me.votes   || [null,null,null,null])]; newVotes[3]   = votes[3];
-  const newMargins = [...(me.margins || [null,null,null,null])]; newMargins[3] = margins[3];
   const key = myName.toLowerCase().replace(/\s+/g,'_');
-  await setDoc(doc(colRef,key),{
-    name: me.name,
-    votes: newVotes,
-    margins: newMargins,
-    time: me.time,
-    modified: me.modified
-  });
+  if(me) {
+    // 已有 5/2 三場記錄 → 補加 G7
+    const newVotes   = [...(me.votes   || [null,null,null,null])]; newVotes[3]   = votes[3];
+    const newMargins = [...(me.margins || [null,null,null,null])]; newMargins[3] = margins[3];
+    await setDoc(doc(colRef,key),{
+      name: me.name, votes: newVotes, margins: newMargins,
+      time: me.time, modified: me.modified
+    });
+    toast('✅ G7 預測已補加！');
+  } else {
+    // 新用戶，只預測 G7
+    await setDoc(doc(colRef,key),{
+      name: myName,
+      votes: [null, null, null, votes[3]],
+      margins: [null, null, null, margins[3]],
+      time: Date.now(),
+      modified: false
+    });
+    toast('✅ G7 預測已送出！');
+  }
   document.getElementById('g7-extra-wrap').style.display='none';
-  toast('✅ G7 預測已補加！');
 };
 
 window.deleteMe = async function(){
