@@ -1,3 +1,4 @@
+import argparse
 import requests
 
 # 台灣 5/2 的比賽 = 美東 5/1；台灣 5/3 的 G7 = 美東 5/2
@@ -65,7 +66,25 @@ def get_result(event):
             winner = team_name
     return winner, score_map, comps
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Update NBA 5/2 prediction results from ESPN into Firestore."
+    )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Write finished-game results to Firestore. Without this flag, only print a dry run.",
+    )
+    parser.add_argument(
+        "--include-empty",
+        action="store_true",
+        help="Also write null values for unfinished games. Default skips unfinished games.",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     results = {i: {"winner": None, "scoreA": None, "scoreB": None, "margin": None} for i in range(4)}
 
     # 抓兩天的賽程（5/1 的 G6 × 3 + 5/2 的 G7 × 1）
@@ -93,24 +112,35 @@ def main():
                     }
                 break
 
-    print("📊 賽果:", results)
+    print("ESPN results:", results)
 
     fields = {}
     mask_parts = []
     for i in range(4):
         r = results[i]
+        if not args.include_empty and not r["winner"]:
+            continue
         fields[f"r{i}"] = {"stringValue": r["winner"]} if r["winner"] else {"nullValue": None}
         fields[f"a{i}"] = {"integerValue": str(r["scoreA"])} if r["scoreA"] is not None else {"nullValue": None}
         fields[f"b{i}"] = {"integerValue": str(r["scoreB"])} if r["scoreB"] is not None else {"nullValue": None}
         fields[f"m{i}"] = {"integerValue": str(r["margin"])} if r["margin"] is not None else {"nullValue": None}
         mask_parts += [f"r{i}", f"a{i}", f"b{i}", f"m{i}"]
 
+    if not fields:
+        print("No finished games to update.")
+        return
+
+    print("Fields prepared:", ", ".join(mask_parts))
+    if not args.write:
+        print("Dry run only. Re-run with --write to update Firestore.")
+        return
+
     mask = "&".join(f"updateMask.fieldPaths={p}" for p in mask_parts)
     resp = requests.patch(f"{FIRESTORE_URL}?{mask}", json={"fields": fields}, timeout=10)
     if resp.status_code == 200:
-        print("✅ Firestore 更新成功")
+        print("Firestore update succeeded.")
     else:
-        print(f"❌ 更新失敗 {resp.status_code}: {resp.text}")
+        print(f"Update failed {resp.status_code}: {resp.text}")
 
 if __name__ == "__main__":
     main()
