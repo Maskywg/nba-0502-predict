@@ -620,7 +620,7 @@ const INJURIES = [
       { cls: 'i-out', zh: '❌ Luka Dončić OUT（湖人，右腿後側拉傷）', en: '❌ Luka Dončić OUT (Lakers, right hamstring strain)' },
       { cls: 'i-doubt', zh: '⚠️ Kevin Durant DOUBTFUL（火箭，腳踝骨挫傷）', en: '⚠️ Kevin Durant DOUBTFUL (Rockets, ankle bone bruise)' },
     ] },
-  { matchup: { zh: '塞爾提克 vs 76人（G7 · Tied 3-3 · 波士頓主場）', en: 'Celtics vs 76ers (G7 · tied 3-3 · Boston home)' },
+  { matchup: { zh: '塞爾提克 vs 76人（G7 · Final · 76人 109-100 勝出）', en: 'Celtics vs 76ers (G7 · final · 76ers win 109-100)' },
     tags: [
       { cls: 'i-q', zh: '❓ Kristaps Porziņģis QUESTIONABLE（塞爾提克，小腿）', en: '❓ Kristaps Porziņģis QUESTIONABLE (Celtics, calf)' },
     ] },
@@ -753,10 +753,10 @@ const SECTIONS = [
 const MATCH_COUNT = 4;
 let votes = new Array(MATCH_COUNT).fill(null), locked = false, g7Locked = false, myName = '';
 let margins = new Array(MATCH_COUNT).fill(null);
-let results = [null, null, null, null], latestDB = [];
-let marginResults = [null, null, null, null];
-let scoreA  = [null, null, null, null];
-let scoreB  = [null, null, null, null];
+let results = [null, null, null, '76人'], latestDB = [];
+let marginResults = [null, null, null, 0];
+let scoreA  = [null, null, null, 100];
+let scoreB  = [null, null, null, 109];
 let modifyMode = false, myModified = false, hasSubmitted = false;
 
 function renderMatches() {
@@ -1349,10 +1349,10 @@ onSnapshot(query(colRef,orderBy('time')),(snap)=>{
 const unsubResults=onSnapshot(resultsRef,(snap)=>{
   if(snap.exists()){
     const d=snap.data();
-    results=[d.r0||null,d.r1||null,d.r2||null,d.r3||null];
-    scoreA=[d.a0||null,d.a1||null,d.a2||null,d.a3||null];
-    scoreB=[d.b0||null,d.b1||null,d.b2||null,d.b3||null];
-    marginResults=[d.m0??null,d.m1??null,d.m2??null,d.m3??null];
+    results=[d.r0||null,d.r1||null,d.r2||null,d.r3||'76人'];
+    scoreA=[d.a0||null,d.a1||null,d.a2||null,d.a3||100];
+    scoreB=[d.b0||null,d.b1||null,d.b2||null,d.b3||109];
+    marginResults=[d.m0??null,d.m1??null,d.m2??null,d.m3??0];
     updateCardScores();
     if(results.every(r=>r!==null)){
       const injBox=document.querySelector('.injury-box');
